@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Niuai - Em Breve</title>
+  <link rel="icon" type="image/x-icon" href="images/iconiuai.ico" />
+  <style>
+    body {
+      background-image: url("images/bg.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 0;
+      padding: 40px 20px;
+      font-family: Arial, sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+      text-align: center;
+    }
+
+    h1 {
+  font-size: 24px;
+  color: white;
+  text-shadow: 1px 1px 4px #000000cc;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 700px;
+    }
+
+    .content {
+      display: flex;
+      width: 100%;
+      max-width: 1000px;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .logo-container img {
+      width: 500px;
+      max-width: 90vw;
+      height: auto;
+    }
+
+    .chat-box {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 400px;
+      height: 500px;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 10px;
+      text-align: left;
+    }
+
+    .chat-input {
+      display: flex;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px 0 0 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    .chat-input button {
+      padding: 10px 15px;
+      background-color: #00a9b4;
+      color: white;
+      border: none;
+      border-radius: 0 8px 8px 0;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .message {
+      margin-bottom: 8px;
+    }
+
+    .message.user {
+      text-align: right;
+      color: #00e1ff;
+    }
+
+    .message.bot {
+      text-align: left;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+<h1>💬 Tem alguma coisa no seu dia a dia que é chato, tá te dando trabalho demais, gastando tempo ou dinheiro à toa?<br>
+Desabafa ali no chat, a gente resolve com inteligência.</h1>
+
+  <div class="content">
+    <div class="logo-container">
+      <img src="images/logo.png" alt="Logo NIUAI" />
+    </div>
+
+<div class="chat-box">
+  <div class="chat-messages" id="chat-messages"></div>
+
+  <div class="chat-input">
+    <textarea id="chat-input" placeholder="Vem cá, conta pra nós!" rows="1"></textarea>
+    <button onclick="sendMessage()">Enviar</button>
+  </div>
+</div>
+
+<script>
+  const input = document.getElementById("chat-input");
+  const botao = document.querySelector(".chat-input button");
+
+  input.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault(); // impede quebra de linha
+      botao.click(); // simula clique no botão
+    }
+    // Shift + Enter permite quebra de linha normalmente
+  });
+</script>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("chat-input");
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      const chat = document.getElementById("chat-messages");
+      chat.innerHTML += `<div class="message user">${msg}</div>`;
+      input.value = "";
+
+      try {
+        const res = await fetch("https://webhook.niuai.com.br/webhook/chatniuai", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: msg })
+        });
+
+        const data = await res.json();
+        const reply = data.reply || "Recebido com sucesso!";
+        chat.innerHTML += `<div class="message bot">${reply}</div>`;
+      } catch (e) {
+        chat.innerHTML += `<div class="message bot">Erro ao conectar com o servidor 😢</div>`;
+      }
+
+      chat.scrollTop = chat.scrollHeight;
+    }
+  </script>
+</body>
+</html>
