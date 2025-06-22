@@ -142,14 +142,12 @@ Desabafa ali no chat, a gente resolve com inteligência.</h1>
       chat.innerHTML += `<div class="message user">${msg}</div>`;
       input.value = "";
 
-   <script>
     // Geração de session_id persistente
       let sessionId = localStorage.getItem("session_id");
       if (!sessionId) {
       sessionId = Math.random().toString(36).substr(2, 9);
       localStorage.setItem("session_id", sessionId);
       }
-  </script>
     
       try {
         const res = await fetch("https://n8n.niuai.com.br/webhook-test/chatniuai", {
