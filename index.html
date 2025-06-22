@@ -150,7 +150,7 @@ Desabafa ali no chat, a gente resolve com inteligência.</h1>
       }
     
       try {
-        const res = await fetch("https://n8n.niuai.com.br/webhook-test/chatniuai", {
+        const res = await fetch("https://webhook.niuai.com.br/webhook/chatniuai", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: msg, session_id: sessionId  })
@@ -189,7 +189,7 @@ Desabafa ali no chat, a gente resolve com inteligência.</h1>
     input.value = "";
 
     try {
-      const url = new URL("https://n8n.niuai.com.br/webhook-test/chatniuai");
+      const url = new URL("https://webhook.niuai.com.br/webhook/chatniuai");
       url.searchParams.append("message", msg);
       url.searchParams.append("session_id", sessionId);
 
