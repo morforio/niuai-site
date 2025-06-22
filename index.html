@@ -159,5 +159,52 @@ Desabafa ali no chat, a gente resolve com inteligência.</h1>
       chat.scrollTop = chat.scrollHeight;
     }
   </script>
+
+<script>
+  // Geração de session_id persistente
+  let sessionId = localStorage.getItem("session_id");
+  if (!sessionId) {
+    sessionId = "niuai-" + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem("session_id", sessionId);
+  }
+</script>
+
+<script>
+  const input = document.getElementById("chat-input");
+  const botao = document.querySelector(".chat-input button");
+
+  input.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault(); // impede quebra de linha
+      botao.click(); // simula clique no botão
+    }
+  });
+
+  async function sendMessage() {
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    const chat = document.getElementById("chat-messages");
+    chat.innerHTML += `<div class="message user">${msg}</div>`;
+    input.value = "";
+
+    try {
+      const url = new URL("https://n8n.niuai.com.br/webhook-test/chatniuai");
+      url.searchParams.append("message", msg);
+      url.searchParams.append("session_id", sessionId);
+
+      const res = await fetch(url, { method: "GET" });
+      const data = await res.json();
+
+      const reply = data.reply || "Recebido com sucesso!";
+      chat.innerHTML += `<div class="message bot">${reply}</div>`;
+    } catch (e) {
+      chat.innerHTML += `<div class="message bot">Erro ao conectar com o servidor 😢</div>`;
+    }
+
+    chat.scrollTop = chat.scrollHeight;
+  }
+</script>
+
 </body>
 </html>
