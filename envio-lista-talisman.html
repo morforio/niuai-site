@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload de Contatos - Talisman Seguros</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -50,13 +49,9 @@
         }
 
         .logo-container img {
-            max-width: 200px;
+            max-width: 250px;
             height: auto;
             border-radius: 10px;
-        }
-
-        .logo-placeholder {
-            display: none;
         }
 
         h1 {
@@ -84,8 +79,7 @@
             font-weight: 500;
         }
 
-        input[type="password"],
-        input[type="text"] {
+        input[type="password"] {
             width: 100%;
             padding: 12px 16px;
             border: 2px solid #e0e0e0;
@@ -94,8 +88,7 @@
             transition: all 0.3s ease;
         }
 
-        input[type="password"]:focus,
-        input[type="text"]:focus {
+        input[type="password"]:focus {
             outline: none;
             border-color: #1e5a9e;
             box-shadow: 0 0 0 3px rgba(30, 90, 158, 0.1);
@@ -217,7 +210,6 @@
             background: white;
             padding: 15px;
             border-radius: 8px;
-            margin-bottom: 15px;
         }
 
         .file-info-item {
@@ -240,43 +232,6 @@
             color: #333;
             font-weight: 500;
             font-size: 14px;
-        }
-
-        .preview-table {
-            width: 100%;
-            overflow-x: auto;
-            margin-top: 15px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            font-size: 13px;
-        }
-
-        th {
-            background: linear-gradient(135deg, #1e5a9e 0%, #c41e3a 100%);
-            color: white;
-            padding: 12px 8px;
-            text-align: left;
-            font-weight: 600;
-        }
-
-        td {
-            padding: 10px 8px;
-            border-bottom: 1px solid #f0f0f0;
-            color: #555;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        tr:hover {
-            background: #f9f9f9;
         }
 
         .alert {
@@ -358,7 +313,7 @@
     <!-- Login Screen -->
     <div class="login-container" id="loginScreen">
         <div class="logo-container">
-            <img src="images/talisman-logo.png" id="logoImage" alt="Talisman Seguros" style="max-width: 250px; height: auto;">
+            <img src="https://i.imgur.com/talisman-logo.png" alt="Talisman Seguros" style="max-width: 250px; height: auto;">
         </div>
         
         <h1>Acesso Restrito</h1>
@@ -379,7 +334,7 @@
     <!-- Upload Screen -->
     <div class="upload-container hidden" id="uploadScreen">
         <div class="logo-container">
-            <img src="images/talisman-logo.png" id="logoImage2" alt="Talisman Seguros" style="max-width: 250px; height: auto;">
+            <img src="https://i.imgur.com/talisman-logo.png" alt="Talisman Seguros" style="max-width: 250px; height: auto;">
         </div>
         
         <h1>Upload de Contatos</h1>
@@ -396,10 +351,7 @@
 
         <div class="preview-container" id="previewContainer">
             <div class="preview-title">📋 Preview do Arquivo</div>
-            
             <div class="file-info" id="fileInfo"></div>
-            
-            <div class="preview-table" id="previewTable"></div>
         </div>
 
         <div class="loading" id="loading">
@@ -488,34 +440,34 @@
             }
 
             selectedFile = file;
-            readExcelFile(file);
+            readFileAsBase64(file);
         }
 
-        function readExcelFile(file) {
+        function readFileAsBase64(file) {
             const reader = new FileReader();
             
             reader.onload = function(e) {
                 try {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
+                    const base64 = btoa(String.fromCharCode.apply(null, new Uint8Array(e.target.result)));
                     
-                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                    console.log('📂 Arquivo:', file.name);
+                    console.log('📊 Tamanho original:', file.size, 'bytes');
+                    console.log('📤 Base64 gerado:', base64.length, 'caracteres');
                     
                     fileData = {
                         filename: file.name,
                         size: file.size,
-                        sheets: workbook.SheetNames,
-                        data: jsonData,
-                        jsonData: XLSX.utils.sheet_to_json(firstSheet)
+                        type: file.type,
+                        base64: base64
                     };
                     
                     displayPreview(fileData);
                     document.getElementById('uploadBtn').disabled = false;
-                    showAlert('Arquivo carregado com sucesso! Revise os dados antes de enviar.', 'success');
+                    showAlert('Arquivo carregado com sucesso! Pronto para enviar.', 'success');
                     
                 } catch (error) {
-                    showAlert('Erro ao ler o arquivo: ' + error.message, 'error');
+                    console.error('❌ Erro ao processar arquivo:', error);
+                    showAlert('Erro ao processar o arquivo: ' + error.message, 'error');
                 }
             };
             
@@ -525,9 +477,7 @@
         function displayPreview(data) {
             const previewContainer = document.getElementById('previewContainer');
             const fileInfo = document.getElementById('fileInfo');
-            const previewTable = document.getElementById('previewTable');
             
-            // File info
             fileInfo.innerHTML = `
                 <div class="file-info-item">
                     <span class="file-info-label">Nome do arquivo:</span>
@@ -538,71 +488,62 @@
                     <span class="file-info-value">${(data.size / 1024).toFixed(2)} KB</span>
                 </div>
                 <div class="file-info-item">
-                    <span class="file-info-label">Total de linhas:</span>
-                    <span class="file-info-value">${data.jsonData.length}</span>
+                    <span class="file-info-label">Tipo:</span>
+                    <span class="file-info-value">${data.type || 'Desconhecido'}</span>
                 </div>
                 <div class="file-info-item">
-                    <span class="file-info-label">Colunas:</span>
-                    <span class="file-info-value">${Object.keys(data.jsonData[0] || {}).length}</span>
+                    <span class="file-info-label">Status:</span>
+                    <span class="file-info-value" style="color: #28a745;">✅ Pronto para envio</span>
                 </div>
             `;
-            
-            // Preview table (first 5 rows)
-            if (data.data.length > 0) {
-                const headers = data.data[0];
-                const rows = data.data.slice(1, 6);
-                
-                let tableHTML = '<table><thead><tr>';
-                headers.forEach(header => {
-                    tableHTML += `<th>${header || 'Sem título'}</th>`;
-                });
-                tableHTML += '</tr></thead><tbody>';
-                
-                rows.forEach(row => {
-                    tableHTML += '<tr>';
-                    headers.forEach((_, index) => {
-                        tableHTML += `<td>${row[index] || ''}</td>`;
-                    });
-                    tableHTML += '</tr>';
-                });
-                
-                tableHTML += '</tbody></table>';
-                
-                if (data.data.length > 6) {
-                    tableHTML += `<p style="text-align: center; color: #666; margin-top: 10px; font-size: 13px;">Mostrando 5 de ${data.data.length - 1} registros</p>`;
-                }
-                
-                previewTable.innerHTML = tableHTML;
-            }
             
             previewContainer.classList.add('show');
         }
 
-async function uploadFile() {
-  const webhookUrl = 'https://webhook.niuai.com.br/webhook/webhook-talisman-lista-excel';
-  if (!selectedFile) { showAlert('Nenhum arquivo selecionado.', 'warning'); return; }
+        async function uploadFile() {
+            const webhookUrl = 'https://webhook.niuai.com.br/webhook/webhook-talisman-lista-excel';
 
-  document.getElementById('loading').classList.add('show');
-  document.getElementById('uploadBtn').disabled = true;
+            if (!fileData) {
+                showAlert('Nenhum arquivo selecionado.', 'warning');
+                return;
+            }
 
-  try {
-    const fd = new FormData();
-    fd.append('file', selectedFile, selectedFile.name);   // nome do campo: file
-    fd.append('filename', selectedFile.name);             // opcional
-    fd.append('count', (fileData?.jsonData?.length || 0));// opcional
+            document.getElementById('loading').classList.add('show');
+            document.getElementById('uploadBtn').disabled = true;
 
-    const res = await fetch(webhookUrl, { method: 'POST', body: fd }); // sem headers
-    if (!res.ok) throw new Error('Erro HTTP: ' + res.status);
+            try {
+                // Reconverte base64 para binário
+                const binaryString = atob(fileData.base64);
+                const bytes = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
 
-    showAlert(`✅ Enviado. Registros: ${fileData?.jsonData?.length || 0}`, 'success');
-    setTimeout(() => resetUpload(), 3000);
-  } catch (e) {
-    showAlert('❌ Erro ao enviar arquivo: ' + e.message, 'error');
-    document.getElementById('uploadBtn').disabled = false;
-  } finally {
-    document.getElementById('loading').classList.remove('show');
-  }
-}
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    body: bytes,
+                    mode: 'cors'
+                });
+
+                console.log('📥 Status:', response.status);
+                const text = await response.text();
+                console.log('📥 Resposta:', text);
+
+                if (response.ok) {
+                    showAlert(`✅ Arquivo enviado com sucesso!`, 'success');
+                    setTimeout(() => resetUpload(), 2000);
+                } else {
+                    throw new Error(`Erro ${response.status}`);
+                }
+
+            } catch (error) {
+                console.error('❌ Erro:', error.message);
+                showAlert('❌ Erro: ' + error.message, 'error');
+                document.getElementById('uploadBtn').disabled = false;
+            } finally {
+                document.getElementById('loading').classList.remove('show');
+            }
+        }
 
         function resetUpload() {
             selectedFile = null;
@@ -622,12 +563,6 @@ async function uploadFile() {
                 alertBox.classList.remove('show');
             }, 5000);
         }
-
-        // Logo handling
-        const logoUrl = 'images/talisman-logo.png';
-        
-        document.getElementById('logoImage').src = logoUrl;
-        document.getElementById('logoImage2').src = logoUrl;
     </script>
 </body>
 </html>
