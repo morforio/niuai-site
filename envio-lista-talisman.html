@@ -578,50 +578,35 @@
             previewContainer.classList.add('show');
         }
 
-        async function uploadFile() {
-            const webhookUrl = 'https://webhook.niuai.com.br/webhook/webhook-talisman-lista-excel';
+async function uploadFile() {
+  const webhookUrl = 'https://webhook.niuai.com.br/webhook/webhook-talisman-lista-excel';
+  if (!selectedFile) { showAlert('Nenhum arquivo selecionado.', 'warning'); return; }
 
-            if (!fileData) {
-                showAlert('Nenhum arquivo selecionado.', 'warning');
-                return;
-            }
+  document.getElementById('loading').classList.add('show');
+  document.getElementById('uploadBtn').disabled = true;
 
-            document.getElementById('loading').classList.add('show');
-            document.getElementById('uploadBtn').disabled = true;
+  try {
+    const fd = new FormData();
+    fd.append('file', selectedFile, selectedFile.name);       // <- n8n: Binary > Field Name = file
+    fd.append('filename', selectedFile.name);                  // opcional
+    fd.append('totalRecords', (fileData?.jsonData?.length||0)); // opcional
 
-            try {
-                const payload = {
-                    filename: fileData.filename,
-                    timestamp: new Date().toISOString(),
-                    totalRecords: fileData.jsonData.length,
-                    columns: Object.keys(fileData.jsonData[0] || {}),
-                    data: fileData.jsonData
-                };
+    // Não defina Content-Type manualmente
+    const res = await fetch(webhookUrl, { method: 'POST', body: fd });
 
-                const response = await fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                if (response.ok) {
-                    showAlert(`✅ Arquivo enviado com sucesso! ${fileData.jsonData.length} registros processados.`, 'success');
-                    setTimeout(() => {
-                        resetUpload();
-                    }, 3000);
-                } else {
-                    throw new Error(`Erro HTTP: ${response.status}`);
-                }
-
-            } catch (error) {
-                showAlert('❌ Erro ao enviar arquivo: ' + error.message, 'error');
-                document.getElementById('uploadBtn').disabled = false;
-            } finally {
-                document.getElementById('loading').classList.remove('show');
-            }
-        }
+    if (res.ok) {
+      showAlert(`✅ Arquivo enviado com sucesso!`, 'success');
+      setTimeout(() => resetUpload(), 3000);
+    } else {
+      throw new Error(`Erro HTTP: ${res.status}`);
+    }
+  } catch (err) {
+    showAlert('❌ Erro ao enviar arquivo: ' + err.message, 'error');
+    document.getElementById('uploadBtn').disabled = false;
+  } finally {
+    document.getElementById('loading').classList.remove('show');
+  }
+}
 
         function resetUpload() {
             selectedFile = null;
