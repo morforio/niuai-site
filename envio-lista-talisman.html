@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload de Contatos - Talisman Seguros</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1e5a9e 0%, #c41e3a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container,
+        .upload-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-container img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .logo-placeholder {
+            display: none;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input[type="password"],
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="password"]:focus,
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #1e5a9e;
+            box-shadow: 0 0 0 3px rgba(30, 90, 158, 0.1);
+        }
+
+        .drop-zone {
+            border: 3px dashed #ccc;
+            border-radius: 15px;
+            padding: 50px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9f9f9;
+            margin-bottom: 20px;
+        }
+
+        .drop-zone:hover,
+        .drop-zone.dragover {
+            border-color: #1e5a9e;
+            background: #e8f2fb;
+            transform: scale(1.02);
+        }
+
+        .drop-zone.dragover {
+            background: #d6e8f7;
+        }
+
+        .drop-zone-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #1e5a9e;
+        }
+
+        .drop-zone-text {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .drop-zone-hint {
+            color: #999;
+            font-size: 13px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e5a9e 0%, #c41e3a 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(30, 90, 158, 0.4);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .preview-container {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .preview-container.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 500px;
+            }
+        }
+
+        .preview-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .file-info {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .file-info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .file-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .file-info-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .file-info-value {
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .preview-table {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            font-size: 13px;
+        }
+
+        th {
+            background: linear-gradient(135deg, #1e5a9e 0%, #c41e3a 100%);
+            color: white;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #555;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1e5a9e;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .upload-container,
+            .login-container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .drop-zone {
+                padding: 30px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginScreen">
+        <div class="logo-container">
+            <img src="images/talisman-logo.png" id="logoImage" alt="Talisman Seguros" style="max-width: 250px; height: auto;">
+        </div>
+        
+        <h1>Acesso Restrito</h1>
+        <p class="subtitle">Talisman Seguros - Sistema de Upload</p>
+        
+        <div class="alert alert-error" id="loginError">
+            Senha incorreta. Tente novamente.
+        </div>
+        
+        <div class="input-group">
+            <label for="password">Senha</label>
+            <input type="password" id="password" placeholder="Digite sua senha" autocomplete="off">
+        </div>
+        
+        <button class="btn btn-primary" onclick="checkPassword()">Acessar</button>
+    </div>
+
+    <!-- Upload Screen -->
+    <div class="upload-container hidden" id="uploadScreen">
+        <div class="logo-container">
+            <img src="images/talisman-logo.png" id="logoImage2" alt="Talisman Seguros" style="max-width: 250px; height: auto;">
+        </div>
+        
+        <h1>Upload de Contatos</h1>
+        <p class="subtitle">Talisman Seguros - Envie sua planilha Excel</p>
+
+        <div class="alert" id="alertBox"></div>
+
+        <div class="drop-zone" id="dropZone">
+            <div class="drop-zone-icon">📊</div>
+            <div class="drop-zone-text">Arraste o arquivo Excel aqui</div>
+            <div class="drop-zone-hint">ou clique para selecionar</div>
+            <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls,.csv">
+        </div>
+
+        <div class="preview-container" id="previewContainer">
+            <div class="preview-title">📋 Preview do Arquivo</div>
+            
+            <div class="file-info" id="fileInfo"></div>
+            
+            <div class="preview-table" id="previewTable"></div>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <div>Enviando arquivo...</div>
+        </div>
+
+        <button class="btn btn-primary" id="uploadBtn" onclick="uploadFile()" disabled>
+            Enviar para CRM
+        </button>
+
+        <button class="btn btn-secondary" onclick="resetUpload()">
+            Limpar e Enviar Outro
+        </button>
+    </div>
+
+    <script>
+        let selectedFile = null;
+        let fileData = null;
+        const correctPassword = 'talisman2025';
+
+        // Login functionality
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            const loginError = document.getElementById('loginError');
+            
+            if (password === correctPassword) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('uploadScreen').classList.remove('hidden');
+            } else {
+                loginError.classList.add('show');
+                document.getElementById('password').value = '';
+                setTimeout(() => {
+                    loginError.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        // Upload functionality
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            const validTypes = [
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'application/vnd.ms-excel',
+                'text/csv'
+            ];
+            
+            if (!validTypes.includes(file.type) && !file.name.match(/\.(xlsx|xls|csv)$/i)) {
+                showAlert('Formato de arquivo inválido. Use Excel (.xlsx, .xls) ou CSV.', 'error');
+                return;
+            }
+
+            selectedFile = file;
+            readExcelFile(file);
+        }
+
+        function readExcelFile(file) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                    
+                    fileData = {
+                        filename: file.name,
+                        size: file.size,
+                        sheets: workbook.SheetNames,
+                        data: jsonData,
+                        jsonData: XLSX.utils.sheet_to_json(firstSheet)
+                    };
+                    
+                    displayPreview(fileData);
+                    document.getElementById('uploadBtn').disabled = false;
+                    showAlert('Arquivo carregado com sucesso! Revise os dados antes de enviar.', 'success');
+                    
+                } catch (error) {
+                    showAlert('Erro ao ler o arquivo: ' + error.message, 'error');
+                }
+            };
+            
+            reader.readAsArrayBuffer(file);
+        }
+
+        function displayPreview(data) {
+            const previewContainer = document.getElementById('previewContainer');
+            const fileInfo = document.getElementById('fileInfo');
+            const previewTable = document.getElementById('previewTable');
+            
+            // File info
+            fileInfo.innerHTML = `
+                <div class="file-info-item">
+                    <span class="file-info-label">Nome do arquivo:</span>
+                    <span class="file-info-value">${data.filename}</span>
+                </div>
+                <div class="file-info-item">
+                    <span class="file-info-label">Tamanho:</span>
+                    <span class="file-info-value">${(data.size / 1024).toFixed(2)} KB</span>
+                </div>
+                <div class="file-info-item">
+                    <span class="file-info-label">Total de linhas:</span>
+                    <span class="file-info-value">${data.jsonData.length}</span>
+                </div>
+                <div class="file-info-item">
+                    <span class="file-info-label">Colunas:</span>
+                    <span class="file-info-value">${Object.keys(data.jsonData[0] || {}).length}</span>
+                </div>
+            `;
+            
+            // Preview table (first 5 rows)
+            if (data.data.length > 0) {
+                const headers = data.data[0];
+                const rows = data.data.slice(1, 6);
+                
+                let tableHTML = '<table><thead><tr>';
+                headers.forEach(header => {
+                    tableHTML += `<th>${header || 'Sem título'}</th>`;
+                });
+                tableHTML += '</tr></thead><tbody>';
+                
+                rows.forEach(row => {
+                    tableHTML += '<tr>';
+                    headers.forEach((_, index) => {
+                        tableHTML += `<td>${row[index] || ''}</td>`;
+                    });
+                    tableHTML += '</tr>';
+                });
+                
+                tableHTML += '</tbody></table>';
+                
+                if (data.data.length > 6) {
+                    tableHTML += `<p style="text-align: center; color: #666; margin-top: 10px; font-size: 13px;">Mostrando 5 de ${data.data.length - 1} registros</p>`;
+                }
+                
+                previewTable.innerHTML = tableHTML;
+            }
+            
+            previewContainer.classList.add('show');
+        }
+
+        async function uploadFile() {
+            const webhookUrl = 'https://webhook.niuai.com.br/webhook/webhook-talisman-lista-excel';
+
+            if (!fileData) {
+                showAlert('Nenhum arquivo selecionado.', 'warning');
+                return;
+            }
+
+            document.getElementById('loading').classList.add('show');
+            document.getElementById('uploadBtn').disabled = true;
+
+            try {
+                const payload = {
+                    filename: fileData.filename,
+                    timestamp: new Date().toISOString(),
+                    totalRecords: fileData.jsonData.length,
+                    columns: Object.keys(fileData.jsonData[0] || {}),
+                    data: fileData.jsonData
+                };
+
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    showAlert(`✅ Arquivo enviado com sucesso! ${fileData.jsonData.length} registros processados.`, 'success');
+                    setTimeout(() => {
+                        resetUpload();
+                    }, 3000);
+                } else {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+
+            } catch (error) {
+                showAlert('❌ Erro ao enviar arquivo: ' + error.message, 'error');
+                document.getElementById('uploadBtn').disabled = false;
+            } finally {
+                document.getElementById('loading').classList.remove('show');
+            }
+        }
+
+        function resetUpload() {
+            selectedFile = null;
+            fileData = null;
+            fileInput.value = '';
+            document.getElementById('previewContainer').classList.remove('show');
+            document.getElementById('uploadBtn').disabled = true;
+            document.getElementById('alertBox').classList.remove('show');
+        }
+
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.className = `alert alert-${type} show`;
+            alertBox.textContent = message;
+            
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+            }, 5000);
+        }
+
+        // Logo handling
+        const logoUrl = 'images/talisman-logo.png';
+        
+        document.getElementById('logoImage').src = logoUrl;
+        document.getElementById('logoImage2').src = logoUrl;
+    </script>
+</body>
+</html>
