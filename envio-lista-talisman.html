@@ -587,21 +587,17 @@ async function uploadFile() {
 
   try {
     const fd = new FormData();
-    fd.append('file', selectedFile, selectedFile.name);       // <- n8n: Binary > Field Name = file
-    fd.append('filename', selectedFile.name);                  // opcional
-    fd.append('totalRecords', (fileData?.jsonData?.length||0)); // opcional
+    fd.append('file', selectedFile, selectedFile.name);   // nome do campo: file
+    fd.append('filename', selectedFile.name);             // opcional
+    fd.append('count', (fileData?.jsonData?.length || 0));// opcional
 
-    // Não defina Content-Type manualmente
-    const res = await fetch(webhookUrl, { method: 'POST', body: fd });
+    const res = await fetch(webhookUrl, { method: 'POST', body: fd }); // sem headers
+    if (!res.ok) throw new Error('Erro HTTP: ' + res.status);
 
-    if (res.ok) {
-      showAlert(`✅ Arquivo enviado com sucesso!`, 'success');
-      setTimeout(() => resetUpload(), 3000);
-    } else {
-      throw new Error(`Erro HTTP: ${res.status}`);
-    }
-  } catch (err) {
-    showAlert('❌ Erro ao enviar arquivo: ' + err.message, 'error');
+    showAlert(`✅ Enviado. Registros: ${fileData?.jsonData?.length || 0}`, 'success');
+    setTimeout(() => resetUpload(), 3000);
+  } catch (e) {
+    showAlert('❌ Erro ao enviar arquivo: ' + e.message, 'error');
     document.getElementById('uploadBtn').disabled = false;
   } finally {
     document.getElementById('loading').classList.remove('show');
