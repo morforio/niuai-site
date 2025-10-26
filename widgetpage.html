@@ -1,246 +1,170 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload de Contatos - Talisman Seguros</title>
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload de Contatos - Talisman Seguros</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:linear-gradient(135deg,#1e5a9e 0%,#c41e3a 100%);
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:8px
+}
+.container{
+  background:#fff;border-radius:12px;box-shadow:0 10px 28px rgba(0,0,0,.2);
+  padding:16px;max-width:420px;width:100%
+}
+.logo-container{text-align:center;margin-bottom:8px}
+.logo-container img{max-width:120px;height:auto}
 
-        body {
-            font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-            background: linear-gradient(135deg,#1e5a9e 0%,#c41e3a 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
+h1{color:#333;text-align:center;margin-bottom:6px;font-size:18px}
+.subtitle{text-align:center;color:#666;margin-bottom:12px;font-size:12px}
 
-        .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            padding: 40px;
-            max-width: 600px;
-            width: 100%;
-        }
+.drop-zone{
+  border:2px dashed #ccc;border-radius:10px;padding:16px;text-align:center;
+  cursor:pointer;background:#f9f9f9;margin-bottom:12px;transition:.2s
+}
+.drop-zone:hover,.drop-zone.dragover{border-color:#1e5a9e;background:#e8f2fb}
+.drop-zone-icon{font-size:28px;margin-bottom:8px;color:#1e5a9e}
+.drop-zone-text{color:#666;font-size:13px;margin-bottom:6px}
+.drop-zone-hint{color:#999;font-size:11px}
+.file-input{display:none}
 
-        .logo-container { text-align:center; margin-bottom:30px; }
-        .logo-container img { max-width:250px; height:auto; }
+.preview-container{margin:10px 0;padding:12px;background:#f9f9f9;border-radius:8px;display:none}
+.preview-container.show{display:block}
+.file-info-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #e0e0e0}
+.file-info-item:last-child{border-bottom:none}
+.file-info-label{color:#666;font-size:12px}
+.file-info-value{color:#333;font-weight:600;font-size:12px}
 
-        h1 { color:#333; text-align:center; margin-bottom:10px; font-size:28px; }
-        .subtitle { text-align:center; color:#666; margin-bottom:30px; font-size:14px; }
+.alert{padding:10px;border-radius:8px;margin:10px 0;display:none;font-size:12px}
+.alert.show{display:block}
+.alert-success{background:#d4edda;color:#155724;border:1px solid #c3e6cb}
+.alert-error{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb}
+.alert-warning{background:#fff3cd;color:#856404;border:1px solid #ffeaa7}
 
-        .drop-zone {
-            border:3px dashed #ccc;
-            border-radius:15px;
-            padding:50px 20px;
-            text-align:center;
-            cursor:pointer;
-            background:#f9f9f9;
-            margin-bottom:20px;
-            transition:all 0.3s ease;
-        }
+.loading{display:none;text-align:center;padding:10px}
+.loading.show{display:block}
+.spinner{border:3px solid #f3f3f3;border-top:3px solid #1e5a9e;border-radius:50%;
+  width:24px;height:24px;animation:spin 1s linear infinite;margin:0 auto 8px}
+@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
 
-        .drop-zone:hover,
-        .drop-zone.dragover { border-color:#1e5a9e; background:#e8f2fb; }
-
-        .drop-zone-icon { font-size:48px; margin-bottom:15px; color:#1e5a9e; }
-        .drop-zone-text { color:#666; font-size:16px; margin-bottom:10px; }
-        .drop-zone-hint { color:#999; font-size:13px; }
-
-        .file-input { display:none; }
-
-        .btn {
-            width:100%;
-            padding:14px;
-            border:none;
-            border-radius:10px;
-            font-size:16px;
-            font-weight:600;
-            cursor:pointer;
-            transition:all 0.3s ease;
-            text-transform:uppercase;
-            letter-spacing:0.5px;
-            margin-bottom:10px;
-        }
-
-        .btn-primary {
-            background:linear-gradient(135deg,#1e5a9e 0%,#c41e3a 100%);
-            color:white;
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            transform:translateY(-2px);
-            box-shadow:0 10px 25px rgba(30,90,158,0.4);
-        }
-
-        .btn-primary:disabled { background:#ccc; cursor:not-allowed; }
-
-        .btn-secondary { background:#f0f0f0; color:#666; }
-        .btn-secondary:hover { background:#e0e0e0; }
-
-        .preview-container {
-            margin:20px 0;
-            padding:20px;
-            background:#f9f9f9;
-            border-radius:10px;
-            display:none;
-        }
-
-        .preview-container.show { display:block; }
-
-        .file-info-item {
-            display:flex;
-            justify-content:space-between;
-            padding:8px 0;
-            border-bottom:1px solid #e0e0e0;
-        }
-
-        .file-info-item:last-child { border-bottom:none; }
-        .file-info-label { color:#666; font-size:14px; }
-        .file-info-value { color:#333; font-weight:500; font-size:14px; }
-
-        .alert {
-            padding:15px;
-            border-radius:10px;
-            margin-bottom:20px;
-            display:none;
-        }
-
-        .alert.show { display:block; }
-
-        .alert-success { background:#d4edda; color:#155724; border:1px solid #c3e6cb; }
-        .alert-error { background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; }
-        .alert-warning { background:#fff3cd; color:#856404; border:1px solid #ffeaa7; }
-
-        .loading { display:none; text-align:center; padding:20px; }
-        .loading.show { display:block; }
-
-        .spinner {
-            border:4px solid #f3f3f3;
-            border-top:4px solid #1e5a9e;
-            border-radius:50%;
-            width:40px;
-            height:40px;
-            animation:spin 1s linear infinite;
-            margin:0 auto 15px;
-        }
-
-        @keyframes spin { 0%{transform:rotate(0deg);}100%{transform:rotate(360deg);} }
-    </style>
+.btn{
+  width:100%;padding:10px;border:0;border-radius:8px;font-size:14px;font-weight:600;
+  cursor:pointer;transition:.2s;text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px
+}
+.btn-primary{background:linear-gradient(135deg,#1e5a9e 0%,#c41e3a 100%);color:#fff}
+.btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 14px rgba(30,90,158,.3)}
+.btn-primary:disabled{background:#ccc;cursor:not-allowed}
+.btn-secondary{background:#f0f0f0;color:#666}
+.btn-secondary:hover{background:#e0e0e0}
+</style>
 </head>
 <body>
-    <!-- Tela única (login removido) -->
-    <div class="container" id="uploadScreen">
-        <div class="logo-container">
-            <img src="images/talisman-logo.png" alt="Talisman Seguros">
-        </div>
-        
-        <h1>Upload de Contatos</h1>
-        <p class="subtitle">Talisman Seguros - Envie sua planilha Excel</p>
-
-        <div class="drop-zone" id="dropZone">
-            <div class="drop-zone-icon">📊</div>
-            <div class="drop-zone-text">Arraste o arquivo Excel aqui</div>
-            <div class="drop-zone-hint">ou clique para selecionar</div>
-            <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls,.csv">
-        </div>
-
-        <div class="preview-container" id="previewContainer">
-            <div style="font-weight:600;margin-bottom:10px;">📋 Preview</div>
-            <div id="fileInfo"></div>
-        </div>
-
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <div>Enviando arquivo...</div>
-        </div>
-
-        <button class="btn btn-primary" id="uploadBtn" onclick="uploadFile()" disabled>Enviar para CRM</button>
-
-        <div class="alert" id="alertBox"></div>
-
-        <button class="btn btn-secondary" onclick="resetUpload()">Limpar e Enviar Outro</button>
+  <div class="container" id="uploadScreen">
+    <div class="logo-container">
+      <img src="images/talisman-logo.png" alt="Talisman Seguros">
     </div>
 
-    <script>
-        let fileData = null;
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('fileInput');
+    <h1>Upload de Contatos</h1>
+    <p class="subtitle">Talisman Seguros · Envie sua planilha Excel</p>
 
-        dropZone.addEventListener('click',()=>fileInput.click());
-        dropZone.addEventListener('dragover',(e)=>{e.preventDefault();dropZone.classList.add('dragover');});
-        dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('dragover'));
-        dropZone.addEventListener('drop',(e)=>{
-            e.preventDefault();dropZone.classList.remove('dragover');
-            if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
-        });
-        fileInput.addEventListener('change',(e)=>{
-            if(e.target.files.length) handleFile(e.target.files[0]);
-        });
+    <div class="drop-zone" id="dropZone">
+      <div class="drop-zone-icon">📊</div>
+      <div class="drop-zone-text">Arraste o arquivo Excel aqui</div>
+      <div class="drop-zone-hint">ou clique para selecionar</div>
+      <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls,.csv">
+    </div>
 
-        function handleFile(file){
-            const valid=[
-                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'application/vnd.ms-excel','text/csv'
-            ];
-            if(!valid.includes(file.type)&&!file.name.match(/\.(xlsx|xls|csv)$/i)){
-                showAlert('Formato inválido.','error');return;
-            }
+    <div class="preview-container" id="previewContainer">
+      <div style="font-weight:600;margin-bottom:6px;font-size:13px">📋 Preview</div>
+      <div id="fileInfo"></div>
+    </div>
 
-            const reader=new FileReader();
-            reader.onload=(e)=>{
-                try{
-                    const base64=btoa(String.fromCharCode.apply(null,new Uint8Array(e.target.result)));
-                    fileData={filename:file.name,size:file.size,base64:base64};
-                    const fileInfo=document.getElementById('fileInfo');
-                    fileInfo.innerHTML=`
-                        <div class="file-info-item"><span class="file-info-label">Nome:</span><span class="file-info-value">${file.name}</span></div>
-                        <div class="file-info-item"><span class="file-info-label">Tamanho:</span><span class="file-info-value">${(file.size/1024).toFixed(2)} KB</span></div>
-                        <div class="file-info-item"><span class="file-info-label">Status:</span><span class="file-info-value" style="color:#28a745;">✅ Pronto</span></div>`;
-                    document.getElementById('previewContainer').classList.add('show');
-                    document.getElementById('uploadBtn').disabled=false;
-                    showAlert('Arquivo carregado!','success');
-                }catch(err){
-                    showAlert('Erro: '+err.message,'error');
-                }
-            };
-            reader.readAsArrayBuffer(file);
-        }
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <div style="font-size:12px">Enviando arquivo…</div>
+    </div>
 
-        async function uploadFile(){
-            if(!fileData)return;
-            document.getElementById('loading').classList.add('show');
-            document.getElementById('uploadBtn').disabled=true;
-            try{
-                const binaryString=atob(fileData.base64);
-                const bytes=new Uint8Array(binaryString.length);
-                for(let i=0;i<binaryString.length;i++) bytes[i]=binaryString.charCodeAt(i);
-                await fetch('https://webhook.niuai.com.br/webhook/webhook-talisman-lista-excel',{method:'POST',body:bytes});
-                showAlert('✅ Arquivo enviado com sucesso!','success');
-                setTimeout(()=>resetUpload(),2000);
-            }catch(error){
-                showAlert('❌ Erro: '+error.message,'error');
-                document.getElementById('uploadBtn').disabled=false;
-            }finally{
-                document.getElementById('loading').classList.remove('show');
-            }
-        }
+    <button class="btn btn-primary" id="uploadBtn" onclick="uploadFile()" disabled>Enviar para CRM</button>
+    <div class="alert" id="alertBox"></div>
+    <button class="btn btn-secondary" onclick="resetUpload()">Limpar e Enviar Outro</button>
+  </div>
 
-        function resetUpload(){
-            fileData=null;fileInput.value='';
-            document.getElementById('previewContainer').classList.remove('show');
-            document.getElementById('uploadBtn').disabled=true;
-        }
+<script>
+let fileData=null;
+const dropZone=document.getElementById('dropZone');
+const fileInput=document.getElementById('fileInput');
 
-        function showAlert(msg,type){
-            const box=document.getElementById('alertBox');
-            box.className=`alert alert-${type} show`;
-            box.textContent=msg;
-            setTimeout(()=>box.classList.remove('show'),5000);
-        }
-    </script>
+dropZone.addEventListener('click',()=>fileInput.click());
+dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('dragover')});
+dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop',e=>{
+  e.preventDefault();dropZone.classList.remove('dragover');
+  if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change',e=>{if(e.target.files.length) handleFile(e.target.files[0])});
+
+function handleFile(file){
+  const valid=[
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-excel','text/csv'
+  ];
+  if(!valid.includes(file.type)&&!file.name.match(/\.(xlsx|xls|csv)$/i)){
+    showAlert('Formato inválido.','error');return;
+  }
+  const reader=new FileReader();
+  reader.onload=(e)=>{
+    try{
+      const base64=btoa(String.fromCharCode.apply(null,new Uint8Array(e.target.result)));
+      fileData={filename:file.name,size:file.size,base64};
+      const info=document.getElementById('fileInfo');
+      info.innerHTML=`
+        <div class="file-info-item"><span class="file-info-label">Nome</span><span class="file-info-value">${file.name}</span></div>
+        <div class="file-info-item"><span class="file-info-label">Tamanho</span><span class="file-info-value">${(file.size/1024).toFixed(2)} KB</span></div>
+        <div class="file-info-item"><span class="file-info-label">Status</span><span class="file-info-value" style="color:#28a745">✅ Pronto</span></div>`;
+      document.getElementById('previewContainer').classList.add('show');
+      document.getElementById('uploadBtn').disabled=false;
+      showAlert('Arquivo carregado.','success');
+    }catch(err){ showAlert('Erro: '+err.message,'error'); }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+async function uploadFile(){
+  if(!fileData)return;
+  document.getElementById('loading').classList.add('show');
+  document.getElementById('uploadBtn').disabled=true;
+  try{
+    const bin=atob(fileData.base64);
+    const bytes=new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+    await fetch('https://webhook.niuai.com.br/webhook/webhook-talisman-lista-excel',{method:'POST',body:bytes});
+    showAlert('✅ Arquivo enviado com sucesso.','success');
+    setTimeout(()=>resetUpload(),1500);
+  }catch(e){
+    showAlert('❌ Erro: '+e.message,'error');
+    document.getElementById('uploadBtn').disabled=false;
+  }finally{
+    document.getElementById('loading').classList.remove('show');
+  }
+}
+
+function resetUpload(){
+  fileData=null; fileInput.value='';
+  document.getElementById('previewContainer').classList.remove('show');
+  document.getElementById('uploadBtn').disabled=true;
+}
+
+function showAlert(msg,type){
+  const box=document.getElementById('alertBox');
+  box.className=`alert alert-${type} show`; box.textContent=msg;
+  setTimeout(()=>box.classList.remove('show'),4000);
+}
+</script>
 </body>
 </html>
+
+
