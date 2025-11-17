@@ -190,8 +190,26 @@
       font-size: 0.7rem;
       padding: 5px 10px;
       border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      opacity: 0.45;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
       background: rgba(38,50,56,0.9);
       color: var(--muted);
+    }
+
+    #resetRecordButton span {
+      color: #ffea00;
+      font-weight: 700;
+      margin-left: 4px;
+    }
+
+    #resetRecordButton:hover {
+      opacity: 0.9;
+      transform: translateY(-0.5px);
+    }
+    #resetRecordButton:active {
+      transform: translateY(1px) scale(0.98);
     }
 
     .status-message {
@@ -199,12 +217,19 @@
       font-size: 0.85rem;
       color: var(--accent-2);
       opacity: 0;
-      transition: opacity 0.2s ease;
+      transform: translateY(5px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
       min-height: 1.2em;
     }
-    .status-message.show { opacity: 1; }
 
-    .footer-note { margin-top: 16px; font-size: 0.7rem; color: var(--muted); }
+    .status-message.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .footer-note { margin-top: 16px; font-size: 0.7rem; color: var(--muted); opacity: 0.8; }
+
+    .footer-note strong { color: var(--accent-soft); }
 
     .easter-egg {
       margin-top: 10px;
@@ -214,18 +239,23 @@
       transition: opacity 0.3s ease;
     }
     .easter-egg.show { opacity: 1; }
+
   </style>
 </head>
-<body>
 
+<body>
   <div class="overlay">
 
-    <h1 class="title glitch" data-text="Monitor Oficial de Treta">Monitor Oficial de Treta</h1>
+    <h1 class="title glitch" data-text="Monitor Oficial de Treta">
+      Monitor Oficial de Treta
+    </h1>
+
     <p class="subtitle">
       Sistema <span>científico</span> de medição de paz conjugal.<br />
       Se apertar o botão vermelho, o Coringa ri.
     </p>
 
+    <!-- CONTADOR 01 -->
     <div class="card">
       <div class="counter-label">Contador 01</div>
       <p class="counter-text">
@@ -233,9 +263,10 @@
         <span id="streakDays" class="counter-number">0</span>
         dias sem clima tenso entre o casal.
       </p>
-      <p class="hint">(contagem feita em GMT-3, auditoria NIUAI anti-biscoitagem)</p>
+      <p class="hint">(contagem GMT-3, auditoria NIUAI anti-biscoitagem)</p>
     </div>
 
+    <!-- CONTADOR 02 -->
     <div class="card">
       <div class="counter-label">Contador 02</div>
       <p class="counter-text">
@@ -243,14 +274,14 @@
         <span id="recordDays" class="counter-number record">0</span>
         dias.
       </p>
-      <p class="hint">Só é atualizado quando o botão vermelho é apertado e o recorde é batido.</p>
+      <p class="hint">Só atualiza quando aperta o botão e bate o recorde.</p>
     </div>
 
     <div class="buttons">
-      <button id="tretaButton">Deu treta</button>
+      <button id="tretaButton" type="button">Deu treta</button>
 
       <div class="admin-buttons">
-        <button id="resetRecordButton" title="Resetar recorde (admin).">
+        <button id="resetRecordButton" type="button" title="Resetar recorde (admin).">
           reset <span>recorde</span>
         </button>
       </div>
@@ -261,9 +292,9 @@
     <div class="footer-note">Dados salvos no navegador via <strong>localStorage</strong>.</div>
 
     <div id="easterEgg" class="easter-egg">MODO CORINGA CONJUGAL ATIVADO.</div>
-
   </div>
 
+  <!-- Áudio -->
   <audio id="jokerLaugh" src="audio/joker-laugh.mp3" preload="auto"></audio>
 
   <script>
@@ -275,45 +306,48 @@
       recordDays: 0,
     };
 
+    let easterEggUnlocked = false;
+    let recordClicks = 0;
+
     function getDayIndexGMTMinus3() {
       const now = new Date();
-      const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
-      const tzMs = utcMs + OFFSET_MINUTES * 60000;
-      return Math.floor(tzMs / 86400000);
+      const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+      const tz = utc + OFFSET_MINUTES * 60000;
+      return Math.floor(tz / 86400000);
     }
 
     function msUntilNextMidnightGMTMinus3() {
       const now = new Date();
-      const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
-      const tzMs = utcMs + OFFSET_MINUTES * 60000;
+      const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+      const tz = utc + OFFSET_MINUTES * 60000;
       const msInDay = 86400000;
-      const msIntoDay = tzMs % msInDay;
-      return (msInDay - msIntoDay) + 1000;
+      return (msInDay - (tz % msInDay)) + 1000;
     }
 
     function loadState() {
-      const currentDay = getDayIndexGMTMinus3();
+      const today = getDayIndexGMTMinus3();
       const storedReset = localStorage.getItem("lastResetDayIndex");
       const storedRecord = localStorage.getItem("recordDays");
 
-      state.lastResetDayIndex = storedReset !== null ? parseInt(storedReset) : currentDay;
-      if (storedReset === null) localStorage.setItem("lastResetDayIndex", String(currentDay));
+      state.lastResetDayIndex = storedReset ? parseInt(storedReset) : today;
+      if (!storedReset) localStorage.setItem("lastResetDayIndex", today);
 
-      state.recordDays = storedRecord !== null ? parseInt(storedRecord) : 0;
+      state.recordDays = storedRecord ? parseInt(storedRecord) : 0;
     }
 
     function saveResetDay(i) {
       state.lastResetDayIndex = i;
-      localStorage.setItem("lastResetDayIndex", String(i));
+      localStorage.setItem("lastResetDayIndex", i);
     }
+
     function saveRecordDays(r) {
       state.recordDays = r;
-      localStorage.setItem("recordDays", String(r));
+      localStorage.setItem("recordDays", r);
     }
 
     function computeCurrentStreak() {
-      const current = getDayIndexGMTMinus3();
-      return Math.max(0, current - state.lastResetDayIndex);
+      const today = getDayIndexGMTMinus3();
+      return Math.max(0, today - state.lastResetDayIndex);
     }
 
     function renderCounters() {
@@ -321,11 +355,11 @@
       document.getElementById("recordDays").textContent = state.recordDays;
     }
 
-    function showStatusMessage(txt) {
-      const msg = document.getElementById("statusMessage");
-      msg.textContent = txt;
-      msg.classList.add("show");
-      setTimeout(() => msg.classList.remove("show"), 5000);
+    function showStatusMessage(t) {
+      const el = document.getElementById("statusMessage");
+      el.textContent = t;
+      el.classList.add("show");
+      setTimeout(() => el.classList.remove("show"), 5000);
     }
 
     function triggerShake() {
@@ -349,11 +383,12 @@
       }
 
       const streak = computeCurrentStreak();
+
       if (streak > state.recordDays) {
         saveRecordDays(streak);
-        showStatusMessage(`Recorde atualizado: ${streak} dias.`);
+        showStatusMessage(`Recorde atualizado para ${streak} dias.`);
       } else {
-        showStatusMessage(`Treta registrada. Recorde permaneceu ${state.recordDays}.`);
+        showStatusMessage(`Treta registrada. Recorde continua em ${state.recordDays}.`);
       }
 
       saveResetDay(getDayIndexGMTMinus3());
@@ -370,15 +405,12 @@
       }
       saveRecordDays(0);
       renderCounters();
-      showStatusMessage("Recorde zerado.");
+      showStatusMessage("Recorde zerado (admin).");
     }
-
-    let easterEggUnlocked = false;
-    let recordClicks = 0;
 
     function initEasterEgg() {
       const recordEl = document.getElementById("recordDays");
-      const eggEl = document.getElementById("easterEgg");
+      const egg = document.getElementById("easterEgg");
 
       recordEl.addEventListener("click", () => {
         if (easterEggUnlocked) return;
@@ -386,18 +418,17 @@
         recordClicks++;
         if (recordClicks >= 7) {
           easterEggUnlocked = true;
-          eggEl.classList.add("show");
-          showStatusMessage("Easter egg desbloqueado.");
+          egg.classList.add("show");
+          showStatusMessage("Easter egg desbloqueado: modo Coringa conjugal ativado.");
         }
       });
     }
 
     function scheduleMidnightUpdate() {
-      const d = msUntilNextMidnightGMTMinus3();
       setTimeout(() => {
         renderCounters();
         scheduleMidnightUpdate();
-      }, d);
+      }, msUntilNextMidnightGMTMinus3());
     }
 
     document.addEventListener("DOMContentLoaded", () => {
