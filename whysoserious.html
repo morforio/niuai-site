@@ -157,7 +157,7 @@
     button {
       border: none;
       cursor: pointer;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease, opacity 0.18s ease;
       font-family: inherit;
     }
 
@@ -205,19 +205,24 @@
         0 4px 10px rgba(255,23,68,0.7);
     }
 
-    /* Botão teste "escondido" */
-    #testButton {
-      margin-top: 4px;
+    .admin-buttons {
+      display: flex;
+      gap: 6px;
       align-self: flex-end;
+      margin-top: 4px;
+    }
+
+    #testButton,
+    #resetRecordButton {
       font-size: 0.7rem;
       padding: 5px 10px;
       border-radius: 999px;
-      background: rgba(38,50,56,0.9);
-      color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.14em;
       opacity: 0.45;
       box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
+      background: rgba(38,50,56,0.9);
+      color: var(--muted);
     }
 
     #testButton span {
@@ -226,12 +231,20 @@
       margin-left: 4px;
     }
 
-    #testButton:hover {
+    #resetRecordButton span {
+      color: #ffea00;
+      font-weight: 700;
+      margin-left: 4px;
+    }
+
+    #testButton:hover,
+    #resetRecordButton:hover {
       opacity: 0.9;
       transform: translateY(-0.5px);
     }
 
-    #testButton:active {
+    #testButton:active,
+    #resetRecordButton:active {
       transform: translateY(1px) scale(0.98);
     }
 
@@ -320,26 +333,33 @@
         Deu treta
       </button>
 
-      <!-- Botão de teste "escondido" -->
-      <button id="testButton" type="button" title="Apenas para simulações de paz conjugal.">
-        teste <span>+1 dia</span>
-      </button>
+      <!-- Botões pequenos "escondidos" -->
+      <div class="admin-buttons">
+        <button id="testButton" type="button" title="Apenas para simulações de paz conjugal.">
+          teste <span>+1 dia</span>
+        </button>
+        <button id="resetRecordButton" type="button" title="Resetar recorde (admin).">
+          reset <span>recorde</span>
+        </button>
+      </div>
     </div>
 
     <div id="statusMessage" class="status-message"></div>
 
     <div class="footer-note">
       Dados salvos no navegador via <strong>localStorage</strong>.<br />
-      Se der muita treta, a culpa é da UI.
     </div>
   </div>
+
+  <!-- Áudio da risada do Coringa -->
+  <audio id="jokerLaugh" src="audio/joker-laugh.mp3" preload="auto"></audio>
 
   <script>
     // ==========================
     // CONFIGURAÇÃO PRINCIPAL
     // ==========================
     const PASSWORD = "meuzovoemchamas";
-    const OFFSET_MINUTES = -180; // GMT-3 (fixo)
+    const OFFSET_MINUTES = -180; // GMT-3
 
     // Estado em memória
     let state = {
@@ -356,11 +376,8 @@
 
     function getDayIndexGMTMinus3() {
       const now = new Date();
-      // ms UTC real
       const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
-      // Aplicando offset GMT-3
       const tzMs = utcMs + OFFSET_MINUTES * 60000;
-      // Índice de dia inteiro
       return Math.floor(tzMs / 86400000);
     }
 
@@ -373,8 +390,7 @@
       const msIntoDay = tzMs % msInDay;
       const msToMidnight = msInDay - msIntoDay;
 
-      // buffer de 1s para garantir troca de dia
-      return msToMidnight + 1000;
+      return msToMidnight + 1000; // buffer
     }
 
     // ==========================
@@ -390,7 +406,6 @@
       let lastResetDayIndex;
 
       if (storedReset === null) {
-        // Primeira vez: consideramos que a última treta foi hoje -> contador começa em 0
         lastResetDayIndex = currentDayIndex;
         localStorage.setItem("lastResetDayIndex", String(lastResetDayIndex));
       } else {
@@ -460,21 +475,32 @@
     // ==========================
 
     function onTretaClick() {
-      const pwd = window.prompt("Digite a senha para registrar a treta:");
-
-      if (pwd === null) {
-        // Cancelado
-        return;
+      // 1) Risada SEMPRE que clicar no botão, independente da senha
+      const laugh = document.getElementById("jokerLaugh");
+      if (laugh) {
+        try {
+          laugh.currentTime = 0;
+          laugh.play().catch(() => {
+            console.warn("Autoplay bloqueado pelo navegador.");
+          });
+        } catch (e) {
+          console.warn("Erro ao reproduzir áudio:", e);
+        }
       }
 
+      // 2) Proteção por senha para realmente registrar a treta
+      const pwd = window.prompt("Digite a senha para registrar a treta:");
+
+      if (pwd === null) return;
+
       if (pwd !== PASSWORD) {
-        showStatusMessage("Senha incorreta. Treta não registrada. (Nice try)");
+        showStatusMessage("Senha incorreta. Treta não registrada. (Só a risada mesmo.)");
         return;
       }
 
       const currentStreak = computeCurrentStreak();
 
-      // 1) Atualizar recorde, se necessário
+      // Atualizar recorde, se necessário
       if (currentStreak > state.recordDays) {
         saveRecordDays(currentStreak);
         showStatusMessage(
@@ -486,7 +512,7 @@
         );
       }
 
-      // 2) Zerar contador 01: registrar novo dia de reset (hoje)
+      // Zerar contador 01: registrar novo dia de reset (hoje)
       const todayIndex = getDayIndexGMTMinus3();
       saveResetDay(todayIndex);
 
@@ -502,6 +528,21 @@
       showStatusMessage("Simulação de +1 dia aplicada. (Botão de teste, não abuse.)");
     }
 
+    function onResetRecordClick() {
+      const pwd = window.prompt("Senha de administrador para resetar o recorde:");
+
+      if (pwd === null) return;
+
+      if (pwd !== PASSWORD) {
+        showStatusMessage("Senha incorreta. Recorde mantido. (Nice try, admin falso.)");
+        return;
+      }
+
+      saveRecordDays(0);
+      renderCounters();
+      showStatusMessage("Recorde zerado manualmente. Voltamos à estaca zero oficial.");
+    }
+
     // ==========================
     // ATUALIZAÇÃO AUTOMÁTICA À MEIA-NOITE
     // ==========================
@@ -509,7 +550,6 @@
     function scheduleMidnightUpdate() {
       const delay = msUntilNextMidnightGMTMinus3();
       setTimeout(() => {
-        // Apenas recalcula a diferença de dias em relação ao último reset
         renderCounters();
         scheduleMidnightUpdate();
       }, delay);
@@ -530,6 +570,10 @@
       document
         .getElementById("testButton")
         .addEventListener("click", onTestClick);
+
+      document
+        .getElementById("resetRecordButton")
+        .addEventListener("click", onResetRecordClick);
 
       scheduleMidnightUpdate();
     });
