@@ -363,7 +363,9 @@
 </head>
 <body>
   <div class="overlay">
-    <h1 class="title">Monitor Oficial de Treta</h1>
+    <h1 class="title glitch" data-text="Monitor Oficial de Treta">
+  Monitor Oficial de Treta
+    </h1>
     <p class="subtitle">
       Sistema <span>científico</span> de medição de paz conjugal.<br />
       Se apertar o botão vermelho, o Coringa ri.
@@ -416,6 +418,10 @@
 
     <div class="footer-note">
       Dados salvos no navegador via <strong>localStorage</strong>.<br />
+    </div>
+    
+    <div id="easterEgg" class="easter-egg">
+      MODO CORINGA CONJUGAL ATIVADO.
     </div>
   </div>
 
@@ -542,6 +548,20 @@
     // HANDLERS DE BOTÕES
     // ==========================
 
+    function triggerShake() {
+      const overlay = document.querySelector(".overlay");
+      if (!overlay) return;
+
+      overlay.classList.remove("shake");
+      // força reflow para reiniciar animação
+      void overlay.offsetWidth;
+      overlay.classList.add("shake");
+
+      setTimeout(() => {
+        overlay.classList.remove("shake");
+      }, 700);
+    }
+
     function onTretaClick() {
       // 1) Risada SEMPRE que clicar no botão, independente da senha
       const laugh = document.getElementById("jokerLaugh");
@@ -588,6 +608,7 @@
       extraTestDays = 0;
 
       renderCounters();
+      triggerShake();
     }
 
     function onTestClick() {
@@ -611,6 +632,28 @@
       showStatusMessage("Recorde zerado manualmente. Voltamos à estaca zero oficial.");
     }
 
+    // ==========================
+    // EASTER EGG
+    // ==========================
+
+    function initEasterEgg() {
+      const recordEl = document.getElementById("recordDays");
+      const eggEl = document.getElementById("easterEgg");
+      if (!recordEl || !eggEl) return;
+
+      recordEl.addEventListener("click", () => {
+        if (easterEggUnlocked) return;
+        recordClicks += 1;
+        if (recordClicks >= 7) {
+          easterEggUnlocked = true;
+          eggEl.classList.add("show");
+          showStatusMessage("Easter egg desbloqueado: modo Coringa conjugal ativado.");
+        }
+      });
+    }
+
+
+    
     // ==========================
     // ATUALIZAÇÃO AUTOMÁTICA À MEIA-NOITE
     // ==========================
@@ -642,10 +685,12 @@
       document
         .getElementById("resetRecordButton")
         .addEventListener("click", onResetRecordClick);
-
+      
+      initEasterEgg();
       scheduleMidnightUpdate();
     });
   </script>
 </body>
 </html>
+
 
