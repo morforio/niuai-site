@@ -5,7 +5,6 @@
   <title>WHY SO SERIOUS?</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Fonte divertida + fonte de texto -->
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
 
   <style>
@@ -37,7 +36,7 @@
       background-color: #000;
       background-image:
         linear-gradient(135deg, rgba(0,0,0,0.8), rgba(10,10,10,0.95)),
-        url("https://images.alphacoders.com/112/1128167.jpg"); /* coloque sua imagem aqui */
+        url("https://images.alphacoders.com/112/1128167.jpg");
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -55,7 +54,6 @@
       overflow: hidden;
     }
 
-    /* Shake quando dá treta */
     @keyframes shake {
       0%, 100% { transform: translate3d(0, 0, 0); }
       15% { transform: translate3d(-6px, 0, 0); }
@@ -69,7 +67,7 @@
     .overlay.shake {
       animation: shake 0.6s cubic-bezier(.36,.07,.19,.97);
     }
-    
+
     .overlay::before {
       content: "NIUAI • CORINGA EDITION";
       position: absolute;
@@ -79,7 +77,6 @@
       letter-spacing: 0.16em;
       transform: rotate(18deg);
       color: rgba(255,255,255,0.2);
-      text-shadow: 0 0 12px rgba(0,0,0,0.6);
       pointer-events: none;
     }
 
@@ -92,33 +89,24 @@
       text-shadow:
         0 0 12px rgba(0,0,0,0.9),
         -2px 2px 0 #000000;
-      position: relative;
     }
 
-     /* Glitch estilo Coringa no título */
-    .glitch {
-      position: relative;
-      display: inline-block;
-    }
-
+    .glitch { position: relative; display: inline-block; }
     .glitch::before,
     .glitch::after {
       content: attr(data-text);
       position: absolute;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100%;
       overflow: hidden;
       pointer-events: none;
     }
-
     .glitch::before {
       color: #ff1744;
       mix-blend-mode: screen;
       animation: glitchBefore 2.2s infinite linear alternate-reverse;
       clip-path: inset(0 0 55% 0);
     }
-
     .glitch::after {
       color: #69f0ae;
       mix-blend-mode: screen;
@@ -127,36 +115,27 @@
     }
 
     @keyframes glitchBefore {
-      0% { transform: translate(0, 0); }
-      10% { transform: translate(-2px, -1px); }
-      20% { transform: translate(2px, 1px); }
-      30% { transform: translate(-1px, 1px); }
-      40% { transform: translate(1px, -1px); }
-      50% { transform: translate(0, 0); }
-      100% { transform: translate(0, 0); }
+      0%,50%,100% { transform: translate(0,0); }
+      10% { transform: translate(-2px,-1px); }
+      20% { transform: translate(2px,1px); }
+      30% { transform: translate(-1px,1px); }
+      40% { transform: translate(1px,-1px); }
     }
 
     @keyframes glitchAfter {
-      0% { transform: translate(0, 0); }
-      15% { transform: translate(2px, -1px); }
-      25% { transform: translate(-2px, 1px); }
-      35% { transform: translate(1px, 1px); }
-      45% { transform: translate(-1px, -1px); }
-      60% { transform: translate(0, 0); }
-      100% { transform: translate(0, 0); }
+      0%,60%,100% { transform: translate(0,0); }
+      15% { transform: translate(2px,-1px); }
+      25% { transform: translate(-2px,1px); }
+      35% { transform: translate(1px,1px); }
+      45% { transform: translate(-1px,-1px); }
     }
-
 
     .subtitle {
       font-size: 0.95rem;
       color: var(--muted);
       margin-bottom: 18px;
     }
-
-    .subtitle span {
-      color: var(--accent-soft);
-      font-weight: 600;
-    }
+    .subtitle span { color: var(--accent-soft); font-weight: 600; }
 
     .card {
       background: var(--card-bg);
@@ -165,71 +144,29 @@
       margin-bottom: 14px;
       border: 1px solid rgba(255,255,255,0.08);
       position: relative;
-      overflow: hidden;
     }
 
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top left, rgba(255,23,68,0.12), transparent 55%);
-      opacity: 0.7;
-      pointer-events: none;
-    }
-
-    .counter-label {
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .counter-text {
-      font-size: 1rem;
-      line-height: 1.4;
-    }
-
+    .counter-label { font-size: 0.9rem; color: var(--muted); margin-bottom: 6px; }
+    .counter-text { font-size: 1rem; line-height: 1.4; }
     .counter-number {
-      font-family: 'Bangers', system-ui, sans-serif;
+      font-family: 'Bangers';
       font-size: 2.6rem;
       color: var(--accent-soft);
-      margin: 0 4px;
-      display: inline-block;
       padding: 0 8px;
-      border-radius: 12px;
       background: rgba(0,0,0,0.5);
-      box-shadow: 0 0 0 2px rgba(255,255,255,0.06);
+      border-radius: 12px;
+      display: inline-block;
       min-width: 52px;
     }
-
     .counter-number.record {
       color: #69f0ae;
       box-shadow: 0 0 0 2px rgba(105,240,174,0.3);
     }
 
-    .hint {
-      font-size: 0.72rem;
-      color: var(--muted);
-      margin-top: 4px;
-      opacity: 0.9;
-    }
+    .hint { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
 
-    .buttons {
-      margin-top: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      align-items: center;
-      justify-content: center;
-    }
+    .buttons { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
 
-    button {
-      border: none;
-      cursor: pointer;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease, opacity 0.18s ease;
-      font-family: inherit;
-    }
-
-    /* Botão principal – Deu treta */
     #tretaButton {
       width: 100%;
       max-width: 360px;
@@ -238,39 +175,8 @@
       font-size: 1.1rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
       background: radial-gradient(circle at 20% 0%, #ff8a80, #ff1744);
       color: #fff;
-      box-shadow:
-        0 8px 24px rgba(255,23,68,0.7),
-        0 0 0 2px rgba(0,0,0,0.6);
-      position: relative;
-    }
-
-    #tretaButton::before {
-      content: "clique apenas em caso de pane geral";
-      position: absolute;
-      top: -14px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.6rem;
-      text-transform: none;
-      letter-spacing: 0.04em;
-      color: rgba(255,255,255,0.8);
-    }
-
-    #tretaButton:hover {
-      transform: translateY(-1px) rotate(-0.8deg);
-      box-shadow:
-        0 12px 30px rgba(255,23,68,0.9),
-        0 0 0 2px rgba(255,255,255,0.15);
-      filter: brightness(1.05);
-    }
-
-    #tretaButton:active {
-      transform: translateY(1px) scale(0.98);
-      box-shadow:
-        0 4px 10px rgba(255,23,68,0.7);
     }
 
     .admin-buttons {
@@ -280,40 +186,12 @@
       margin-top: 4px;
     }
 
-    #testButton,
     #resetRecordButton {
       font-size: 0.7rem;
       padding: 5px 10px;
       border-radius: 999px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      opacity: 0.45;
-      box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
       background: rgba(38,50,56,0.9);
       color: var(--muted);
-    }
-
-    #testButton span {
-      color: #69f0ae;
-      font-weight: 700;
-      margin-left: 4px;
-    }
-
-    #resetRecordButton span {
-      color: #ffea00;
-      font-weight: 700;
-      margin-left: 4px;
-    }
-
-    #testButton:hover,
-    #resetRecordButton:hover {
-      opacity: 0.9;
-      transform: translateY(-0.5px);
-    }
-
-    #testButton:active,
-    #resetRecordButton:active {
-      transform: translateY(1px) scale(0.98);
     }
 
     .status-message {
@@ -321,57 +199,33 @@
       font-size: 0.85rem;
       color: var(--accent-2);
       opacity: 0;
-      transform: translateY(5px);
-      transition: opacity 0.2s ease, transform 0.2s ease;
+      transition: opacity 0.2s ease;
       min-height: 1.2em;
     }
+    .status-message.show { opacity: 1; }
 
-    .status-message.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .footer-note { margin-top: 16px; font-size: 0.7rem; color: var(--muted); }
 
-    .footer-note {
-      margin-top: 16px;
+    .easter-egg {
+      margin-top: 10px;
       font-size: 0.7rem;
-      color: var(--muted);
-      opacity: 0.8;
+      color: #ffea00;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
-
-    .footer-note strong {
-      color: var(--accent-soft);
-    }
-
-    @media (max-width: 480px) {
-      .overlay {
-        padding: 20px 16px 24px;
-        border-radius: 18px;
-      }
-      .title {
-        font-size: 2rem;
-      }
-      .counter-number {
-        font-size: 2.2rem;
-        min-width: 46px;
-      }
-      #tretaButton {
-        font-size: 1rem;
-        padding: 14px 18px;
-      }
-    }
+    .easter-egg.show { opacity: 1; }
   </style>
 </head>
 <body>
+
   <div class="overlay">
-    <h1 class="title glitch" data-text="Monitor Oficial de Treta">
-  Monitor Oficial de Treta
-    </h1>
+
+    <h1 class="title glitch" data-text="Monitor Oficial de Treta">Monitor Oficial de Treta</h1>
     <p class="subtitle">
       Sistema <span>científico</span> de medição de paz conjugal.<br />
       Se apertar o botão vermelho, o Coringa ri.
     </p>
 
-    <!-- CONTADOR 01 -->
     <div class="card">
       <div class="counter-label">Contador 01</div>
       <p class="counter-text">
@@ -379,12 +233,9 @@
         <span id="streakDays" class="counter-number">0</span>
         dias sem clima tenso entre o casal.
       </p>
-      <p class="hint">
-        (contagem feita em GMT-3, auditoria NIUAI anti-biscoitagem)
-      </p>
+      <p class="hint">(contagem feita em GMT-3, auditoria NIUAI anti-biscoitagem)</p>
     </div>
 
-    <!-- CONTADOR 02 -->
     <div class="card">
       <div class="counter-label">Contador 02</div>
       <p class="counter-text">
@@ -392,23 +243,14 @@
         <span id="recordDays" class="counter-number record">0</span>
         dias.
       </p>
-      <p class="hint">
-        Só é atualizado quando o botão vermelho é apertado
-        <strong>e</strong> o recorde é batido.
-      </p>
+      <p class="hint">Só é atualizado quando o botão vermelho é apertado e o recorde é batido.</p>
     </div>
 
     <div class="buttons">
-      <button id="tretaButton" type="button">
-        Deu treta
-      </button>
+      <button id="tretaButton">Deu treta</button>
 
-      <!-- Botões pequenos "escondidos" -->
       <div class="admin-buttons">
-        <button id="testButton" type="button" title="Apenas para simulações de paz conjugal.">
-          teste <span>+1 dia</span>
-        </button>
-        <button id="resetRecordButton" type="button" title="Resetar recorde (admin).">
+        <button id="resetRecordButton" title="Resetar recorde (admin).">
           reset <span>recorde</span>
         </button>
       </div>
@@ -416,37 +258,22 @@
 
     <div id="statusMessage" class="status-message"></div>
 
-    <div class="footer-note">
-      Dados salvos no navegador via <strong>localStorage</strong>.<br />
-    </div>
-    
-    <div id="easterEgg" class="easter-egg">
-      MODO CORINGA CONJUGAL ATIVADO.
-    </div>
+    <div class="footer-note">Dados salvos no navegador via <strong>localStorage</strong>.</div>
+
+    <div id="easterEgg" class="easter-egg">MODO CORINGA CONJUGAL ATIVADO.</div>
+
   </div>
 
-  <!-- Áudio da risada do Coringa -->
   <audio id="jokerLaugh" src="audio/joker-laugh.mp3" preload="auto"></audio>
 
   <script>
-    // ==========================
-    // CONFIGURAÇÃO PRINCIPAL
-    // ==========================
     const PASSWORD = "meuzovoemchamas";
-    const OFFSET_MINUTES = -180; // GMT-3
+    const OFFSET_MINUTES = -180;
 
-    // Estado em memória
     let state = {
       lastResetDayIndex: null,
       recordDays: 0,
     };
-
-    // Incrementos fictícios para o botão "teste"
-    let extraTestDays = 0;
-
-    // ==========================
-    // FUNÇÕES DE TEMPO / DIA
-    // ==========================
 
     function getDayIndexGMTMinus3() {
       const now = new Date();
@@ -459,238 +286,130 @@
       const now = new Date();
       const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
       const tzMs = utcMs + OFFSET_MINUTES * 60000;
-
       const msInDay = 86400000;
       const msIntoDay = tzMs % msInDay;
-      const msToMidnight = msInDay - msIntoDay;
-
-      return msToMidnight + 1000; // buffer
+      return (msInDay - msIntoDay) + 1000;
     }
-
-    // ==========================
-    // PERSISTÊNCIA
-    // ==========================
 
     function loadState() {
-      const currentDayIndex = getDayIndexGMTMinus3();
+      const currentDay = getDayIndexGMTMinus3();
+      const storedReset = localStorage.getItem("lastResetDayIndex");
+      const storedRecord = localStorage.getItem("recordDays");
 
-      let storedReset = localStorage.getItem("lastResetDayIndex");
-      let storedRecord = localStorage.getItem("recordDays");
+      state.lastResetDayIndex = storedReset !== null ? parseInt(storedReset) : currentDay;
+      if (storedReset === null) localStorage.setItem("lastResetDayIndex", String(currentDay));
 
-      let lastResetDayIndex;
-
-      if (storedReset === null) {
-        lastResetDayIndex = currentDayIndex;
-        localStorage.setItem("lastResetDayIndex", String(lastResetDayIndex));
-      } else {
-        lastResetDayIndex = parseInt(storedReset, 10);
-        if (Number.isNaN(lastResetDayIndex)) {
-          lastResetDayIndex = currentDayIndex;
-          localStorage.setItem("lastResetDayIndex", String(lastResetDayIndex));
-        }
-      }
-
-      let recordDays = 0;
-      if (storedRecord !== null) {
-        const parsed = parseInt(storedRecord, 10);
-        if (!Number.isNaN(parsed) && parsed >= 0) {
-          recordDays = parsed;
-        }
-      }
-
-      state.lastResetDayIndex = lastResetDayIndex;
-      state.recordDays = recordDays;
+      state.recordDays = storedRecord !== null ? parseInt(storedRecord) : 0;
     }
 
-    function saveResetDay(index) {
-      state.lastResetDayIndex = index;
-      localStorage.setItem("lastResetDayIndex", String(index));
+    function saveResetDay(i) {
+      state.lastResetDayIndex = i;
+      localStorage.setItem("lastResetDayIndex", String(i));
     }
-
-    function saveRecordDays(record) {
-      state.recordDays = record;
-      localStorage.setItem("recordDays", String(record));
+    function saveRecordDays(r) {
+      state.recordDays = r;
+      localStorage.setItem("recordDays", String(r));
     }
-
-    // ==========================
-    // CÁLCULO DOS CONTADORES
-    // ==========================
 
     function computeCurrentStreak() {
-      const currentDayIndex = getDayIndexGMTMinus3();
-      const base = Math.max(0, currentDayIndex - state.lastResetDayIndex);
-      return base + extraTestDays;
+      const current = getDayIndexGMTMinus3();
+      return Math.max(0, current - state.lastResetDayIndex);
     }
-
-    // ==========================
-    // UI
-    // ==========================
 
     function renderCounters() {
-      const streakEl = document.getElementById("streakDays");
-      const recordEl = document.getElementById("recordDays");
-
-      const streak = computeCurrentStreak();
-      streakEl.textContent = streak;
-      recordEl.textContent = state.recordDays;
+      document.getElementById("streakDays").textContent = computeCurrentStreak();
+      document.getElementById("recordDays").textContent = state.recordDays;
     }
 
-    function showStatusMessage(text) {
-      const msgEl = document.getElementById("statusMessage");
-      msgEl.textContent = text;
-      msgEl.classList.add("show");
-      setTimeout(() => {
-        msgEl.classList.remove("show");
-      }, 5000);
+    function showStatusMessage(txt) {
+      const msg = document.getElementById("statusMessage");
+      msg.textContent = txt;
+      msg.classList.add("show");
+      setTimeout(() => msg.classList.remove("show"), 5000);
     }
-
-    // ==========================
-    // HANDLERS DE BOTÕES
-    // ==========================
 
     function triggerShake() {
       const overlay = document.querySelector(".overlay");
-      if (!overlay) return;
-
       overlay.classList.remove("shake");
-      // força reflow para reiniciar animação
       void overlay.offsetWidth;
       overlay.classList.add("shake");
-
-      setTimeout(() => {
-        overlay.classList.remove("shake");
-      }, 700);
+      setTimeout(() => overlay.classList.remove("shake"), 700);
     }
 
     function onTretaClick() {
-      // 1) Risada SEMPRE que clicar no botão, independente da senha
       const laugh = document.getElementById("jokerLaugh");
-      if (laugh) {
-        try {
-          laugh.currentTime = 0;
-          laugh.play().catch(() => {
-            console.warn("Autoplay bloqueado pelo navegador.");
-          });
-        } catch (e) {
-          console.warn("Erro ao reproduzir áudio:", e);
-        }
-      }
+      laugh.currentTime = 0;
+      laugh.play().catch(() => {});
 
-      // 2) Proteção por senha para realmente registrar a treta
-      const pwd = window.prompt("Digite a senha para registrar a treta:");
-
+      const pwd = prompt("Digite a senha para registrar a treta:");
       if (pwd === null) return;
-
       if (pwd !== PASSWORD) {
-        showStatusMessage("Senha incorreta. Treta não registrada. (Só a risada mesmo.)");
+        showStatusMessage("Senha incorreta. Treta não registrada.");
         return;
       }
 
-      const currentStreak = computeCurrentStreak();
-
-      // Atualizar recorde, se necessário
-      if (currentStreak > state.recordDays) {
-        saveRecordDays(currentStreak);
-        showStatusMessage(
-          `Recorde atualizado: ${currentStreak} dias de paz. Agora foi tudo pro chão.`
-        );
+      const streak = computeCurrentStreak();
+      if (streak > state.recordDays) {
+        saveRecordDays(streak);
+        showStatusMessage(`Recorde atualizado: ${streak} dias.`);
       } else {
-        showStatusMessage(
-          `Treta registrada. Recorde de ${state.recordDays} dias se manteve intacto.`
-        );
+        showStatusMessage(`Treta registrada. Recorde permaneceu ${state.recordDays}.`);
       }
 
-      // Zerar contador 01: registrar novo dia de reset (hoje)
-      const todayIndex = getDayIndexGMTMinus3();
-      saveResetDay(todayIndex);
-
-      // Zera incrementos de teste
-      extraTestDays = 0;
-
+      saveResetDay(getDayIndexGMTMinus3());
       renderCounters();
       triggerShake();
     }
 
-    function onTestClick() {
-      extraTestDays += 1;
-      renderCounters();
-      showStatusMessage("Simulação de +1 dia aplicada. (Botão de teste, não abuse.)");
-    }
-
     function onResetRecordClick() {
-      const pwd = window.prompt("Senha de administrador para resetar o recorde:");
-
+      const pwd = prompt("Senha de administrador:");
       if (pwd === null) return;
-
       if (pwd !== PASSWORD) {
-        showStatusMessage("Senha incorreta. Recorde mantido. (Nice try, admin falso.)");
+        showStatusMessage("Senha incorreta.");
         return;
       }
-
       saveRecordDays(0);
       renderCounters();
-      showStatusMessage("Recorde zerado manualmente. Voltamos à estaca zero oficial.");
+      showStatusMessage("Recorde zerado.");
     }
 
-    // ==========================
-    // EASTER EGG
-    // ==========================
+    let easterEggUnlocked = false;
+    let recordClicks = 0;
 
     function initEasterEgg() {
       const recordEl = document.getElementById("recordDays");
       const eggEl = document.getElementById("easterEgg");
-      if (!recordEl || !eggEl) return;
 
       recordEl.addEventListener("click", () => {
         if (easterEggUnlocked) return;
-        recordClicks += 1;
+
+        recordClicks++;
         if (recordClicks >= 7) {
           easterEggUnlocked = true;
           eggEl.classList.add("show");
-          showStatusMessage("Easter egg desbloqueado: modo Coringa conjugal ativado.");
+          showStatusMessage("Easter egg desbloqueado.");
         }
       });
     }
 
-
-    
-    // ==========================
-    // ATUALIZAÇÃO AUTOMÁTICA À MEIA-NOITE
-    // ==========================
-
     function scheduleMidnightUpdate() {
-      const delay = msUntilNextMidnightGMTMinus3();
+      const d = msUntilNextMidnightGMTMinus3();
       setTimeout(() => {
         renderCounters();
         scheduleMidnightUpdate();
-      }, delay);
+      }, d);
     }
-
-    // ==========================
-    // BOOTSTRAP
-    // ==========================
 
     document.addEventListener("DOMContentLoaded", () => {
       loadState();
       renderCounters();
 
-      document
-        .getElementById("tretaButton")
-        .addEventListener("click", onTretaClick);
+      document.getElementById("tretaButton").addEventListener("click", onTretaClick);
+      document.getElementById("resetRecordButton").addEventListener("click", onResetRecordClick);
 
-      document
-        .getElementById("testButton")
-        .addEventListener("click", onTestClick);
-
-      document
-        .getElementById("resetRecordButton")
-        .addEventListener("click", onResetRecordClick);
-      
       initEasterEgg();
       scheduleMidnightUpdate();
     });
   </script>
 </body>
 </html>
-
-
