@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>WHY SO SERIOUS?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Fonte divertida + fonte de texto -->
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-overlay: rgba(0, 0, 0, 0.70);
+      --card-bg: rgba(20, 20, 20, 0.9);
+      --accent: #ff1744;
+      --accent-soft: #ff8a80;
+      --accent-2: #ffea00;
+      --text: #f5f5f5;
+      --muted: #b0bec5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Roboto', sans-serif;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      background-color: #000;
+      background-image:
+        linear-gradient(135deg, rgba(0,0,0,0.8), rgba(10,10,10,0.95)),
+        url("https://images.alphacoders.com/112/1128167.jpg"); /* coloque sua imagem aqui */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    .overlay {
+      background: var(--bg-overlay);
+      border-radius: 24px;
+      padding: 28px 24px 32px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.9);
+      border: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .overlay::before {
+      content: "NIUAI • CORINGA EDITION";
+      position: absolute;
+      top: 16px;
+      right: -40px;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      transform: rotate(18deg);
+      color: rgba(255,255,255,0.2);
+      text-shadow: 0 0 12px rgba(0,0,0,0.6);
+      pointer-events: none;
+    }
+
+    .title {
+      font-family: 'Bangers', system-ui, sans-serif;
+      font-size: 2.4rem;
+      line-height: 1.1;
+      margin-bottom: 4px;
+      color: var(--accent-2);
+      text-shadow:
+        0 0 12px rgba(0,0,0,0.9),
+        -2px 2px 0 #000000;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .subtitle span {
+      color: var(--accent-soft);
+      font-weight: 600;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 18px 18px 20px;
+      margin-bottom: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(255,23,68,0.12), transparent 55%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .counter-label {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .counter-text {
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    .counter-number {
+      font-family: 'Bangers', system-ui, sans-serif;
+      font-size: 2.6rem;
+      color: var(--accent-soft);
+      margin: 0 4px;
+      display: inline-block;
+      padding: 0 8px;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.5);
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.06);
+      min-width: 52px;
+    }
+
+    .counter-number.record {
+      color: #69f0ae;
+      box-shadow: 0 0 0 2px rgba(105,240,174,0.3);
+    }
+
+    .hint {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 4px;
+      opacity: 0.9;
+    }
+
+    .buttons {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+      font-family: inherit;
+    }
+
+    /* Botão principal – Deu treta */
+    #tretaButton {
+      width: 100%;
+      max-width: 360px;
+      padding: 16px 20px;
+      border-radius: 999px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      background: radial-gradient(circle at 20% 0%, #ff8a80, #ff1744);
+      color: #fff;
+      box-shadow:
+        0 8px 24px rgba(255,23,68,0.7),
+        0 0 0 2px rgba(0,0,0,0.6);
+      position: relative;
+    }
+
+    #tretaButton::before {
+      content: "clique apenas em caso de pane geral";
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.6rem;
+      text-transform: none;
+      letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.8);
+    }
+
+    #tretaButton:hover {
+      transform: translateY(-1px) rotate(-0.8deg);
+      box-shadow:
+        0 12px 30px rgba(255,23,68,0.9),
+        0 0 0 2px rgba(255,255,255,0.15);
+      filter: brightness(1.05);
+    }
+
+    #tretaButton:active {
+      transform: translateY(1px) scale(0.98);
+      box-shadow:
+        0 4px 10px rgba(255,23,68,0.7);
+    }
+
+    /* Botão teste "escondido" */
+    #testButton {
+      margin-top: 4px;
+      align-self: flex-end;
+      font-size: 0.7rem;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(38,50,56,0.9);
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      opacity: 0.45;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
+    }
+
+    #testButton span {
+      color: #69f0ae;
+      font-weight: 700;
+      margin-left: 4px;
+    }
+
+    #testButton:hover {
+      opacity: 0.9;
+      transform: translateY(-0.5px);
+    }
+
+    #testButton:active {
+      transform: translateY(1px) scale(0.98);
+    }
+
+    .status-message {
+      margin-top: 14px;
+      font-size: 0.85rem;
+      color: var(--accent-2);
+      opacity: 0;
+      transform: translateY(5px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      min-height: 1.2em;
+    }
+
+    .status-message.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      font-size: 0.7rem;
+      color: var(--muted);
+      opacity: 0.8;
+    }
+
+    .footer-note strong {
+      color: var(--accent-soft);
+    }
+
+    @media (max-width: 480px) {
+      .overlay {
+        padding: 20px 16px 24px;
+        border-radius: 18px;
+      }
+      .title {
+        font-size: 2rem;
+      }
+      .counter-number {
+        font-size: 2.2rem;
+        min-width: 46px;
+      }
+      #tretaButton {
+        font-size: 1rem;
+        padding: 14px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <h1 class="title">Monitor Oficial de Treta</h1>
+    <p class="subtitle">
+      Sistema <span>científico</span> de medição de paz conjugal.<br />
+      Se apertar o botão vermelho, o Coringa ri.
+    </p>
+
+    <!-- CONTADOR 01 -->
+    <div class="card">
+      <div class="counter-label">Contador 01</div>
+      <p class="counter-text">
+        Estamos há
+        <span id="streakDays" class="counter-number">0</span>
+        dias sem clima tenso entre o casal.
+      </p>
+      <p class="hint">
+        (contagem feita em GMT-3, auditoria NIUAI anti-biscoitagem)
+      </p>
+    </div>
+
+    <!-- CONTADOR 02 -->
+    <div class="card">
+      <div class="counter-label">Contador 02</div>
+      <p class="counter-text">
+        Nosso recorde é de
+        <span id="recordDays" class="counter-number record">0</span>
+        dias.
+      </p>
+      <p class="hint">
+        Só é atualizado quando o botão vermelho é apertado
+        <strong>e</strong> o recorde é batido.
+      </p>
+    </div>
+
+    <div class="buttons">
+      <button id="tretaButton" type="button">
+        Deu treta
+      </button>
+
+      <!-- Botão de teste "escondido" -->
+      <button id="testButton" type="button" title="Apenas para simulações de paz conjugal.">
+        teste <span>+1 dia</span>
+      </button>
+    </div>
+
+    <div id="statusMessage" class="status-message"></div>
+
+    <div class="footer-note">
+      Dados salvos no navegador via <strong>localStorage</strong>.<br />
+      Se der muita treta, a culpa é da UI.
+    </div>
+  </div>
+
+  <script>
+    // ==========================
+    // CONFIGURAÇÃO PRINCIPAL
+    // ==========================
+    const PASSWORD = "meuzovoemchamas";
+    const OFFSET_MINUTES = -180; // GMT-3 (fixo)
+
+    // Estado em memória
+    let state = {
+      lastResetDayIndex: null,
+      recordDays: 0,
+    };
+
+    // Incrementos fictícios para o botão "teste"
+    let extraTestDays = 0;
+
+    // ==========================
+    // FUNÇÕES DE TEMPO / DIA
+    // ==========================
+
+    function getDayIndexGMTMinus3() {
+      const now = new Date();
+      // ms UTC real
+      const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+      // Aplicando offset GMT-3
+      const tzMs = utcMs + OFFSET_MINUTES * 60000;
+      // Índice de dia inteiro
+      return Math.floor(tzMs / 86400000);
+    }
+
+    function msUntilNextMidnightGMTMinus3() {
+      const now = new Date();
+      const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+      const tzMs = utcMs + OFFSET_MINUTES * 60000;
+
+      const msInDay = 86400000;
+      const msIntoDay = tzMs % msInDay;
+      const msToMidnight = msInDay - msIntoDay;
+
+      // buffer de 1s para garantir troca de dia
+      return msToMidnight + 1000;
+    }
+
+    // ==========================
+    // PERSISTÊNCIA
+    // ==========================
+
+    function loadState() {
+      const currentDayIndex = getDayIndexGMTMinus3();
+
+      let storedReset = localStorage.getItem("lastResetDayIndex");
+      let storedRecord = localStorage.getItem("recordDays");
+
+      let lastResetDayIndex;
+
+      if (storedReset === null) {
+        // Primeira vez: consideramos que a última treta foi hoje -> contador começa em 0
+        lastResetDayIndex = currentDayIndex;
+        localStorage.setItem("lastResetDayIndex", String(lastResetDayIndex));
+      } else {
+        lastResetDayIndex = parseInt(storedReset, 10);
+        if (Number.isNaN(lastResetDayIndex)) {
+          lastResetDayIndex = currentDayIndex;
+          localStorage.setItem("lastResetDayIndex", String(lastResetDayIndex));
+        }
+      }
+
+      let recordDays = 0;
+      if (storedRecord !== null) {
+        const parsed = parseInt(storedRecord, 10);
+        if (!Number.isNaN(parsed) && parsed >= 0) {
+          recordDays = parsed;
+        }
+      }
+
+      state.lastResetDayIndex = lastResetDayIndex;
+      state.recordDays = recordDays;
+    }
+
+    function saveResetDay(index) {
+      state.lastResetDayIndex = index;
+      localStorage.setItem("lastResetDayIndex", String(index));
+    }
+
+    function saveRecordDays(record) {
+      state.recordDays = record;
+      localStorage.setItem("recordDays", String(record));
+    }
+
+    // ==========================
+    // CÁLCULO DOS CONTADORES
+    // ==========================
+
+    function computeCurrentStreak() {
+      const currentDayIndex = getDayIndexGMTMinus3();
+      const base = Math.max(0, currentDayIndex - state.lastResetDayIndex);
+      return base + extraTestDays;
+    }
+
+    // ==========================
+    // UI
+    // ==========================
+
+    function renderCounters() {
+      const streakEl = document.getElementById("streakDays");
+      const recordEl = document.getElementById("recordDays");
+
+      const streak = computeCurrentStreak();
+      streakEl.textContent = streak;
+      recordEl.textContent = state.recordDays;
+    }
+
+    function showStatusMessage(text) {
+      const msgEl = document.getElementById("statusMessage");
+      msgEl.textContent = text;
+      msgEl.classList.add("show");
+      setTimeout(() => {
+        msgEl.classList.remove("show");
+      }, 5000);
+    }
+
+    // ==========================
+    // HANDLERS DE BOTÕES
+    // ==========================
+
+    function onTretaClick() {
+      const pwd = window.prompt("Digite a senha para registrar a treta:");
+
+      if (pwd === null) {
+        // Cancelado
+        return;
+      }
+
+      if (pwd !== PASSWORD) {
+        showStatusMessage("Senha incorreta. Treta não registrada. (Nice try)");
+        return;
+      }
+
+      const currentStreak = computeCurrentStreak();
+
+      // 1) Atualizar recorde, se necessário
+      if (currentStreak > state.recordDays) {
+        saveRecordDays(currentStreak);
+        showStatusMessage(
+          `Recorde atualizado: ${currentStreak} dias de paz. Agora foi tudo pro chão.`
+        );
+      } else {
+        showStatusMessage(
+          `Treta registrada. Recorde de ${state.recordDays} dias se manteve intacto.`
+        );
+      }
+
+      // 2) Zerar contador 01: registrar novo dia de reset (hoje)
+      const todayIndex = getDayIndexGMTMinus3();
+      saveResetDay(todayIndex);
+
+      // Zera incrementos de teste
+      extraTestDays = 0;
+
+      renderCounters();
+    }
+
+    function onTestClick() {
+      extraTestDays += 1;
+      renderCounters();
+      showStatusMessage("Simulação de +1 dia aplicada. (Botão de teste, não abuse.)");
+    }
+
+    // ==========================
+    // ATUALIZAÇÃO AUTOMÁTICA À MEIA-NOITE
+    // ==========================
+
+    function scheduleMidnightUpdate() {
+      const delay = msUntilNextMidnightGMTMinus3();
+      setTimeout(() => {
+        // Apenas recalcula a diferença de dias em relação ao último reset
+        renderCounters();
+        scheduleMidnightUpdate();
+      }, delay);
+    }
+
+    // ==========================
+    // BOOTSTRAP
+    // ==========================
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadState();
+      renderCounters();
+
+      document
+        .getElementById("tretaButton")
+        .addEventListener("click", onTretaClick);
+
+      document
+        .getElementById("testButton")
+        .addEventListener("click", onTestClick);
+
+      scheduleMidnightUpdate();
+    });
+  </script>
+</body>
+</html>
