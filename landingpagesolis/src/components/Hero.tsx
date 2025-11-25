@@ -11,7 +11,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center pt-16 lg:pt-20">
+    <section id="hero" className="relative min-h-screen flex items-center pt-16 lg:pt-20 bg-background">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img
