@@ -1,0 +1,31 @@
+<Window x:Class="HabitGameGuard.Views.LojaWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Loja de Partidas" Height="400" Width="500">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+            <TextBlock Text="Selecione o app" />
+            <ComboBox ItemsSource="{Binding Apps}" SelectedItem="{Binding AppSelecionado}" DisplayMemberPath="NomeAmigavel" />
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,0,0,10">
+            <TextBlock Text="Saldo atual:" />
+            <TextBlock Text="{Binding Saldo}" FontSize="18" />
+            <TextBlock Text="Dados da sessão" FontWeight="Bold" Margin="0,6,0,2" />
+            <TextBlock Text="Partidas liberadas: {Binding Sessao.PartidasLiberadas}" />
+            <TextBlock Text="Partidas consumidas: {Binding Sessao.PartidasConsumidas}" />
+            <TextBlock Text="Disponíveis: {Binding PartidasDisponiveis}" />
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                <TextBlock Text="Créditos para gastar:" VerticalAlignment="Center" />
+                <TextBox Width="80" Margin="5,0,0,0" Text="{Binding CreditosCompra}" />
+                <Button Content="Comprar" Margin="10,0,0,0" Click="Comprar_Click" />
+            </StackPanel>
+            <TextBlock TextWrapping="Wrap" Margin="0,6,0,0" Text="1 partida = créditos definidos por app. O débito real acontece ao final de cada partida detectada pela Live Client Data API." />
+        </StackPanel>
+        <Button Grid.Row="2" Content="Fechar" Width="80" HorizontalAlignment="Right" Click="Fechar_Click" />
+    </Grid>
+</Window>
