@@ -1,0 +1,62 @@
+<Window x:Class="HabitGameGuard.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="HabitGameGuard" Height="500" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="SpaceBetween">
+            <TextBlock Text="Dashboard" FontSize="22" FontWeight="Bold" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="HabitosBtn" Content="Gerenciar Hábitos" Margin="5" Padding="5" Click="HabitosBtn_Click" />
+                <Button x:Name="AppsBtn" Content="Apps Bloqueados" Margin="5" Padding="5" Click="AppsBtn_Click" />
+                <Button x:Name="LojaBtn" Content="Loja de Partidas" Margin="5" Padding="5" Click="LojaBtn_Click" />
+            </StackPanel>
+        </StackPanel>
+        <Grid Grid.Row="1" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                <TextBlock Text="Saldo de créditos" FontWeight="Bold" />
+                <TextBlock Text="{Binding Saldo}" FontSize="26" />
+                <TextBlock Text="Hábitos de hoje" Margin="0,10,0,4" FontWeight="Bold" />
+                <ItemsControl ItemsSource="{Binding Habitos}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="LightGray" BorderThickness="1" Padding="6" Margin="0,0,0,6">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{Binding Nome}" FontWeight="SemiBold" />
+                                    <TextBlock Text="{Binding Descricao}" FontSize="12" />
+                                    <TextBlock Text="Meta diária: {Binding MetaDiaria}" FontSize="12" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="Hábitos concluídos hoje" FontWeight="Bold" />
+                <TextBlock Text="{Binding HabitosConcluidosHoje}" FontSize="24" />
+                <TextBlock Text="Resumo de partidas" Margin="0,10,0,4" FontWeight="Bold" />
+                <ItemsControl ItemsSource="{Binding Sessoes}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="LightGray" BorderThickness="1" Padding="6" Margin="0,0,0,6">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding NomeApp}" FontWeight="SemiBold" />
+                                    <TextBlock Text="Liberadas: {Binding Liberadas}" />
+                                    <TextBlock Text="Consumidas: {Binding Consumidas}" />
+                                    <TextBlock Text="Disponíveis: {Binding Disponiveis}" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
