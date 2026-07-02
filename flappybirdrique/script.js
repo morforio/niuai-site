@@ -87,16 +87,7 @@ function iniciarComEspaco(event) {
     }
 }
 
-var escolhasom;
-
 function jogo() {
-
-    switch (escolhasom) {
-        case 1: wundebarplay();
-            break;
-
-        default: break;
-    }
     // POSICIONANDO FUNDO DO JOGO
     ctx.drawImage(bg, 0, 0) // (imagem, posicao x, posicao y)
 
@@ -151,8 +142,8 @@ function jogo() {
             }]
             i = 0;
             document.addEventListener("keydown", iniciarComEspaco);
+            setTimeout(wundebarplay(), 800);
             location.reload();
-            setTimeout(wundebarplay(), 1000);
         }
 
 
