@@ -145,7 +145,7 @@ function jogo() {
             wundebarplay();
             setTimeout(function () {
                 location.reload();
-            }, 1500)
+            }, 3000)
         }
 
 
