@@ -57,6 +57,8 @@ var scoresound = new Audio();
 scoresound.src = "sounds/score.mp3";
 var wundebar = new Audio();
 wundebar.src = "sounds/wunderbar.mp3";
+var pretocigano = new Audio();
+pretocigano.src = "sounds/preto-cigano.mp3";
 
 // CAPTURA DE TECLA
 document.addEventListener("keydown", voa);
@@ -123,6 +125,7 @@ function jogo() {
         if (bx + birdwidth >= cano[i].x + folgax && bx + folgax <= cano[i].x + cimawidth
             // PASSARO COLIDIU COM O CANO DE CIMA OU COM O CANO DE BAIXO
             && (by + folgay <= cano[i].y + cimaheight || by + birdheight >= cano[i].y + constant + folgay)) {
+            pretocigano.play();
             bx = 33;
             by = 200;
             cano = [{
@@ -131,7 +134,9 @@ function jogo() {
             }]
             i = 0;
             document.addEventListener("keydown", iniciarComEspaco);
-            location.reload();
+            setTimeout(function () {
+                location.reload();
+            }, 6000)
         }
 
         if ((by + birdheight) >= (canvas.height - chao.height)) {
