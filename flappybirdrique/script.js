@@ -143,6 +143,7 @@ function jogo() {
             i = 0;
             document.addEventListener("keydown", iniciarComEspaco);
             wundebar.play();
+            gravidade = 0;
             setTimeout(function () {
                 location.reload();
             }, 3000)
