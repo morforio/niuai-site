@@ -57,6 +57,8 @@ scoresound.src = "sounds/score.mp3";
 
 // CAPTURA DE TECLA
 document.addEventListener("keydown", voa);
+document.addEventListener("touchstart", voa);
+
 
 // FUNÇÃO PARA VOAR
 function voa() {
