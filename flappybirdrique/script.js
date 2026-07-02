@@ -97,12 +97,6 @@ function jogo() {
     //REMOVER EVENTO DA BARRA DE ESPAÇO
     document.removeEventListener("keydown", iniciarComEspaco);
 
-    if ((by + birdheight) >= (canvas.height - chao.height)) {
-        wundebarplay();
-        setTimeout(function () {
-            location.reload();
-        }, 1500)
-    }
     //CRIANDO CANOS
     for (let i = 0; i < cano.length; i++) {
         //POSIÇÃO DO CANO DE BAIXO
@@ -148,7 +142,10 @@ function jogo() {
             }]
             i = 0;
             document.addEventListener("keydown", iniciarComEspaco);
-            location.reload();
+            wundebarplay();
+            setTimeout(function () {
+                location.reload();
+            }, 1500)
         }
 
 
