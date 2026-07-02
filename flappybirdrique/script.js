@@ -128,6 +128,7 @@ function jogo() {
         }
 
         if ((by + birdheight) >= (canvas.height - chao.height)) {
+            wundebar.play();
             bx = 33;
             by = 200;
             cano = [{
