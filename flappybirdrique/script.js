@@ -143,7 +143,7 @@ function jogo() {
             i = 0;
             document.addEventListener("keydown", iniciarComEspaco);
             wundebarplay();
-            location.reload();
+
         }
 
 
