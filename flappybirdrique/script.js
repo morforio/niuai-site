@@ -134,6 +134,8 @@ function jogo() {
             }]
             i = 0;
             document.addEventListener("keydown", iniciarComEspaco);
+            gravidade = 0;
+            velocano = 0;
             setTimeout(function () {
                 location.reload();
             }, 6000)
