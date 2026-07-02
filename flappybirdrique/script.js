@@ -128,7 +128,6 @@ function jogo() {
         }
 
         if ((by + birdheight) >= (canvas.height - chao.height)) {
-            wundebar.play();
             bx = 33;
             by = 200;
             cano = [{
@@ -138,6 +137,7 @@ function jogo() {
             i = 0;
             document.addEventListener("keydown", iniciarComEspaco);
             location.reload();
+            wundebar.play();
         }
 
         //MARCANDO PONTOS
