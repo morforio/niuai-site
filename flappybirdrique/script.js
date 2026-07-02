@@ -152,7 +152,7 @@ function jogo() {
             i = 0;
             document.addEventListener("keydown", iniciarComEspaco);
             location.reload();
-            escolhasom = 1;
+            setTimeout(wundebarplay(), 1000);
         }
 
 
