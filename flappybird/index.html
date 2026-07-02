@@ -1,17 +1,65 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flappy Bird</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #111; /* Fundo escuro nas laterais do computador */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+        }
+        /* 1. O Container imita o formato vertical de um celular */
+        .jogo-container {
+            position: relative;
+            height: 100vh;          /* Ocupa toda a altura da tela */
+            max-width: 100vw;       /* Impede de passar da largura no celular */
+            aspect-ratio: 288/512;  /* Força a proporção vertical (9:16) do celular */
+            box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8); /* Efeito de sombra bonito nas laterais no PC */
+        }
+        /* 2. O Canvas agora preenche o container sem distorcer */
+        #canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            background-image: url('images/bg_pre.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        /* 3. O botão fica centralizado em relação ao container */
+        #iniciar-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            background-color: #f75f1c;
+            color: #fff;
+            border: 3px solid #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+        }
+    </style>
 </head>
-
 <body>
-    <h3>Flépi Bardi</h3>
-    <button id="iniciar-button">INICIAR</button>
-    <canvas id="canvas" width="288" height="512" style="background-image: url('images/bg_pre.jpg');"></canvas>
+    <!-- Envelopamos o botão e o canvas no container do celular -->
+    <div class="jogo-container">
+        <button id="iniciar-button">INICIAR</button>
+        <canvas id="canvas" width="288" height="512"></canvas>
+    </div>
     <script src="script.js"></script>
-
 </body>
-
-
 </html>
