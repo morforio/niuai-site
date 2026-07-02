@@ -145,7 +145,7 @@ function jogo() {
     // CRIANDO O PLACAR;
     ctx.fillStyle = "#000";
     ctx.font = "20px Verdana";
-    ctx.fillText("Placar: " + score, 10, canvas.height - 20);
+    ctx.fillText("Placar: " + score, 10, 40);
 
     requestAnimationFrame(jogo);
 };
