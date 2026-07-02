@@ -41,6 +41,7 @@ var cimaheight = 242;
 var cimawidth = 52;
 var baixoheight = 378;
 var baixowidth = 52;
+var velocano = -1;
 
 cano[0] = {
     x: canvas.width,
@@ -109,7 +110,7 @@ function jogo() {
         ctx.drawImage(canobaixo, cano[i].x, cano[i].y + constant, baixowidth, baixoheight);
 
         //MOVIMENTAÇÃO DO CANO
-        cano[i].x = cano[i].x - 1;
+        cano[i].x = cano[i].x - velocano;
 
         //CRIAR NOVOS CANOS
         if (cano[i].x == 125) {
@@ -144,6 +145,7 @@ function jogo() {
             document.addEventListener("keydown", iniciarComEspaco);
             wundebar.play();
             gravidade = 0;
+            velocano = 0;
             setTimeout(function () {
                 location.reload();
             }, 3000)
