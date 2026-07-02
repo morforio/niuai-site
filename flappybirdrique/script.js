@@ -138,7 +138,7 @@ function jogo() {
             velocano = 0;
             setTimeout(function () {
                 location.reload();
-            }, 6000)
+            }, 7000)
         }
 
         if ((by + birdheight) >= (canvas.height - chao.height)) {
