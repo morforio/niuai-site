@@ -41,7 +41,7 @@ var cimaheight = 242;
 var cimawidth = 52;
 var baixoheight = 378;
 var baixowidth = 52;
-var velocano = -1;
+var velocano = 1;
 
 cano[0] = {
     x: canvas.width,
