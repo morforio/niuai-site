@@ -68,6 +68,12 @@ function voa() {
     by = by - 38;
 }
 
+//FUNÇÃO PRA TOCAR MUSICA
+function wundebarplay() {
+    wundebar.play();
+}
+
+
 // INICIAR O JOGO COM BOTAO
 iniciarButton.addEventListener("click", jogo);
 
@@ -137,8 +143,10 @@ function jogo() {
             i = 0;
             document.addEventListener("keydown", iniciarComEspaco);
             location.reload();
-            wundebar.play();
+            wundebarplay();
         }
+
+
 
         //MARCANDO PONTOS
         if (cano[i].x == 5) {
