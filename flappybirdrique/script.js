@@ -145,7 +145,7 @@ function jogo() {
             }]
             i = 0;
             document.addEventListener("keydown", iniciarComEspaco);
-            position.reload();
+            location.reload();
         }
 
 
