@@ -54,6 +54,8 @@ var fly = new Audio();
 fly.src = "sounds/fly.mp3";
 var scoresound = new Audio();
 scoresound.src = "sounds/score.mp3";
+var wundebar = new Audio();
+wundebar.src = "sounds/wunderbar.mp3";
 
 // CAPTURA DE TECLA
 document.addEventListener("keydown", voa);
@@ -116,6 +118,9 @@ function jogo() {
             && (by + folgay <= cano[i].y + cimaheight || by + birdheight >= cano[i].y + constant + folgay)
             // PASSARO COLIDIU COM O CHAO
             || (by + birdheight >= canvas.height - chao.height)) {
+            if (y + birdheight >= canvas.height - chao.height) {
+                wundebar.play();
+            }
             bx = 33;
             by = 200;
             cano = [{
@@ -149,4 +154,3 @@ function jogo() {
 
     requestAnimationFrame(jogo);
 };
-
