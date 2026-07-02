@@ -37,6 +37,10 @@ var folgax = 5;
 var folgay = 5;
 const birdheight = 26;
 const birdwidth = 38;
+var cimaheight = 242;
+var cimawidth = 52;
+var baixoheight = 378;
+var baixowidth = 52;
 
 cano[0] = {
     x: canvas.width,
@@ -86,13 +90,13 @@ function jogo() {
     //CRIANDO CANOS
     for (let i = 0; i < cano.length; i++) {
         //POSIÇÃO DO CANO DE BAIXO
-        constant = canocima.height + eec;
+        constant = cimaheight + eec;
 
         //POSIÇÃO DO CANO DE CIMA
-        ctx.drawImage(canocima, cano[i].x, cano[i].y, 52, 242);
+        ctx.drawImage(canocima, cano[i].x, cano[i].y, cimawidth, cimaheight);
 
         //CONFIGURANDO O CANO DE BAIXO
-        ctx.drawImage(canobaixo, cano[i].x, cano[i].y + constant, 52, 378);
+        ctx.drawImage(canobaixo, cano[i].x, cano[i].y + constant, baixowidth, baixoheight);
 
         //MOVIMENTAÇÃO DO CANO
         cano[i].x = cano[i].x - 1;
@@ -101,13 +105,13 @@ function jogo() {
         if (cano[i].x == 125) {
             cano.push({
                 x: canvas.width,
-                y: Math.floor(Math.random() * canocima.height) - canocima.height
+                y: Math.floor(Math.random() * cimaheight) - cimaheight
             })
         }
         // PASSARO ENTRE AS BORDAS DO CANO
-        if (bx + birdwidth >= cano[i].x + folgax && bx + folgax <= cano[i].x + canocima.width
+        if (bx + birdwidth >= cano[i].x + folgax && bx + folgax <= cano[i].x + cimawidth
             // PASSARO COLIDIU COM O CANO DE CIMA OU COM O CANO DE BAIXO
-            && (by + folgay <= cano[i].y + canocima.height || by + birdheight >= cano[i].y + constant + folgay)
+            && (by + folgay <= cano[i].y + cimaheight || by + birdheight >= cano[i].y + constant + folgay)
             // PASSARO COLIDIU COM O CHAO
             || (by + birdheight >= canvas.height - chao.height)) {
             bx = 33;
