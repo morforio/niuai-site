@@ -148,7 +148,7 @@ function jogo() {
             velocano = 0;
             setTimeout(function () {
                 location.reload();
-            }, 3000)
+            }, 6000)
         }
 
 
