@@ -8,8 +8,8 @@ var iniciarButton = document.getElementById("iniciar-button")
 var rect = canvas.getBoundingClientRect();
 
 iniciarButton.style.position = "absolute";
-iniciarButton.style.left = (rect.left + rect.width / 2) + "px";
-iniciarButton.style.top = (rect.top + rect.height / 2) + "px";
+iniciarButton.style.left = "50%";
+iniciarButton.style.top = "50%";
 iniciarButton.style.transform = "translate(-50%, -50%)";
 
 // CARREGANDO IMAGENS
@@ -57,7 +57,7 @@ scoresound.src = "sounds/score.mp3";
 
 // CAPTURA DE TECLA
 document.addEventListener("keydown", voa);
-document.addEventListener("touchstart", voa);
+document.addEventListener("pointerdown", voa);
 
 
 // FUNÇÃO PARA VOAR
