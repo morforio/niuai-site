@@ -1,17 +1,53 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flappy Bird</title>
+    <style>
+        /* Remove margens e barras de rolagem da tela do celular */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+        }
+        /* O Canvas ocupa toda a largura e altura da tela do navegador */
+        #canvas {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+            background-image: url('images/bg_pre.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        /* O botão fica posicionado de forma absoluta sobre o Canvas */
+        #iniciar-button {
+            position: absolute;
+            z-index: 10;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            background-color: #f75f1c;
+            color: #fff;
+            border: 3px solid #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+        }
+    </style>
 </head>
-
 <body>
-    <h3>Flépi Bardi</h3>
+    <!-- Retiramos o h3 e colocamos apenas o botão e o canvas -->
     <button id="iniciar-button">INICIAR</button>
-    <canvas id="canvas" width="288" height="512" style="background-image: url('images/bg_pre.jpg'); max-width: 100%; max-height: 85vh; height: auto; aspect-ratio: 288/512; display: block; margin: 0 auto;"></canvas>
+    <canvas id="canvas" width="288" height="512"></canvas>
+    
     <script src="script.js"></script>
-
 </body>
-
-
-</html>
