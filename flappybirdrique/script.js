@@ -115,13 +115,19 @@ function jogo() {
         // PASSARO ENTRE AS BORDAS DO CANO
         if (bx + birdwidth >= cano[i].x + folgax && bx + folgax <= cano[i].x + cimawidth
             // PASSARO COLIDIU COM O CANO DE CIMA OU COM O CANO DE BAIXO
-            && (by + folgay <= cano[i].y + cimaheight || by + birdheight >= cano[i].y + constant + folgay)
-            // PASSARO COLIDIU COM O CHAO
-            || (by + birdheight >= canvas.height - chao.height)) {
-            if (y + birdheight >= canvas.height - chao.height) {
-                wundebar.play();
-                break;
-            }
+            && (by + folgay <= cano[i].y + cimaheight || by + birdheight >= cano[i].y + constant + folgay)) {
+            bx = 33;
+            by = 200;
+            cano = [{
+                x: canvas.width,
+                y: 0
+            }]
+            i = 0;
+            document.addEventListener("keydown", iniciarComEspaco);
+            location.reload();
+        }
+
+        if ((by + birdheight) >= (canvas.height - chao.height)) {
             bx = 33;
             by = 200;
             cano = [{
