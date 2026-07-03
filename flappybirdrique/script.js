@@ -31,7 +31,7 @@ var constant;
 var bx = 33;
 var by = 200;
 var sentidograv = 1;
-var gravidade = 2.3;
+var gravidade = 2.8;
 var score = 0;
 var cano = [];
 var folgax = 5;
