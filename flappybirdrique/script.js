@@ -30,6 +30,7 @@ var eec = 100;
 var constant;
 var bx = 33;
 var by = 200;
+var sentidograv = 1;
 var gravidade = 2.3;
 var score = 0;
 var cano = [];
@@ -68,7 +69,7 @@ document.addEventListener("pointerdown", voa);
 // FUNÇÃO PARA VOAR
 function voa() {
     fly.play();
-    by = by - 38;
+    sentidograv = -sentidograv;
 }
 
 //FUNÇÃO PRA TOCAR MUSICA
@@ -134,6 +135,7 @@ function jogo() {
             }]
             i = 0;
             document.addEventListener("keydown", iniciarComEspaco);
+            sentidograv = 1;
             gravidade = 0;
             velocano = 0;
             setTimeout(function () {
@@ -151,6 +153,7 @@ function jogo() {
             i = 0;
             document.addEventListener("keydown", iniciarComEspaco);
             wundebar.play();
+            sentidograv = 1;
             gravidade = 0;
             velocano = 0;
             setTimeout(function () {
@@ -173,7 +176,7 @@ function jogo() {
 
     // DESENHANDO O PASSARO
     ctx.drawImage(bird, bx, by, birdwidth, birdheight)
-    by += gravidade;
+    by += sentidograv * gravidade;
 
     // CRIANDO O PLACAR;
     ctx.fillStyle = "#000";
