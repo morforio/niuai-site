@@ -91,7 +91,22 @@ function iniciarComEspaco(event) {
     }
 }
 
-function jogo() {
+let ultimoTempo = 0;
+
+function jogo(tempoAtual) {
+
+    if (ultimoTempo == 0) {
+        ultimoTempo = tempoAtual;
+    }
+
+
+    deltaTime = (tempoAtual - ultimoTempo) / 1000;
+
+    ultimoTempo = tempoAtual;
+
+    let gravidade = 2.8 * deltaTime;
+    let velocano = 1 * deltaTime;
+
     // POSICIONANDO FUNDO DO JOGO
     ctx.drawImage(bg, 0, 0) // (imagem, posicao x, posicao y)
 
