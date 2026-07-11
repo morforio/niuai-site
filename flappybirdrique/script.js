@@ -95,7 +95,7 @@ let ultimoTempo = 0;
 
 function jogo(tempoAtual) {
 
-    if (ultimoTempo == 0) {
+    if (!ultimoTempo) {
         ultimoTempo = tempoAtual;
     }
 
@@ -103,9 +103,6 @@ function jogo(tempoAtual) {
     deltaTime = (tempoAtual - ultimoTempo) / 1000;
 
     ultimoTempo = tempoAtual;
-
-    let gravidade = 2.8 * deltaTime;
-    let velocano = 1 * deltaTime;
 
     // POSICIONANDO FUNDO DO JOGO
     ctx.drawImage(bg, 0, 0) // (imagem, posicao x, posicao y)
@@ -128,7 +125,7 @@ function jogo(tempoAtual) {
         ctx.drawImage(canobaixo, cano[i].x, cano[i].y + constant, baixowidth, baixoheight);
 
         //MOVIMENTAÇÃO DO CANO
-        cano[i].x = cano[i].x - velocano;
+        cano[i].x = cano[i].x - velocano * deltaTime;
 
         //CRIAR NOVOS CANOS
         if (cano[i].x == 125) {
@@ -191,7 +188,7 @@ function jogo(tempoAtual) {
 
     // DESENHANDO O PASSARO
     ctx.drawImage(bird, bx, by, birdwidth, birdheight)
-    by += sentidograv * gravidade;
+    by += sentidograv * gravidade * deltaTime;
 
     // CRIANDO O PLACAR;
     ctx.fillStyle = "#000";
