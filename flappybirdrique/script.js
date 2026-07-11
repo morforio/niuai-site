@@ -148,8 +148,8 @@ function jogo(tempoAtual) {
             i = 0;
             document.addEventListener("keydown", iniciarComEspaco);
             sentidograv = 1;
-            gravidade = 0;
-            velocano = 0;
+            //gravidade = 0;
+            //velocano = 0;
             setTimeout(function () {
                 location.reload();
             }, 7000)
@@ -166,8 +166,8 @@ function jogo(tempoAtual) {
             document.addEventListener("keydown", iniciarComEspaco);
             wundebar.play();
             sentidograv = 1;
-            gravidade = 0;
-            velocano = 0;
+            //gravidade = 0;
+            //velocano = 0;
             setTimeout(function () {
                 location.reload();
             }, 6000)
