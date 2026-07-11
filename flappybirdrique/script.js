@@ -95,6 +95,18 @@ let ultimoTempo = 0;
 
 function jogo(tempoAtual) {
 
+    if (typeof tempoAtual !== "number") {
+        tempoAtual = performance.now();
+    };
+
+    if (!ultimoTempo) {
+        ultimoTempo = tempoAtual;
+    };
+
+    deltaTime = (tempoAtual - ultimoTempo) / 1000;
+
+    ultimoTempo = tempoAtual;
+
     // POSICIONANDO FUNDO DO JOGO
     ctx.drawImage(bg, 0, 0) // (imagem, posicao x, posicao y)
 
@@ -106,14 +118,7 @@ function jogo(tempoAtual) {
 
     //CRIANDO CANOS
     for (let i = 0; i < cano.length; i++) {
-            if (!ultimoTempo) {
-        ultimoTempo = tempoAtual;
-        };
 
-        deltaTime = (tempoAtual - ultimoTempo) / 1000;
-
-        ultimoTempo = tempoAtual;
-        
         //POSIÇÃO DO CANO DE BAIXO
         constant = cimaheight + eec;
 
