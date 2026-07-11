@@ -31,7 +31,7 @@ var constant;
 var bx = 33;
 var by = 200;
 var sentidograv = 1;
-var gravidade = 2.8;
+var gravidade = 60;
 var score = 0;
 var cano = [];
 var folgax = 6;
@@ -42,7 +42,7 @@ var cimaheight = 242;
 var cimawidth = 52;
 var baixoheight = 378;
 var baixowidth = 52;
-var velocano = 1;
+var velocano = 30;
 
 cano[0] = {
     x: canvas.width,
