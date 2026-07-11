@@ -46,7 +46,8 @@ var velocano = 60;
 
 cano[0] = {
     x: canvas.width,
-    y: 0
+    y: 0,
+    novoCriado: false
 }
 
 
@@ -132,11 +133,14 @@ function jogo(tempoAtual) {
         cano[i].x = cano[i].x - velocano * deltaTime;
 
         //CRIAR NOVOS CANOS
-        if (cano[i].x == 125) {
+        if (cano[i].x <= 125 && !cano[i].novoCriado) {
+            cano[i].novoCriado = true;
+
             cano.push({
                 x: canvas.width,
-                y: Math.floor(Math.random() * cimaheight) - cimaheight
-            })
+                y: Math.floor(Math.random() * cimaheight) - cimaheight,
+                novoCriado:false
+            });
         }
         // PASSARO ENTRE AS BORDAS DO CANO
         if (bx + birdwidth >= cano[i].x + folgax && bx + folgax <= cano[i].x + cimawidth
@@ -147,7 +151,8 @@ function jogo(tempoAtual) {
             by = 200;
             cano = [{
                 x: canvas.width,
-                y: 0
+                y: 0,
+                novoCriado: false
             }]
             i = 0;
             document.addEventListener("keydown", iniciarComEspaco);
@@ -164,7 +169,8 @@ function jogo(tempoAtual) {
             by = 200;
             cano = [{
                 x: canvas.width,
-                y: 0
+                y: 0,
+                novoCriado: false
             }]
             i = 0;
             document.addEventListener("keydown", iniciarComEspaco);
