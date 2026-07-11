@@ -31,7 +31,7 @@ var constant;
 var bx = 33;
 var by = 200;
 var sentidograv = 1;
-var gravidade = 60;
+var gravidade = 180;
 var score = 0;
 var cano = [];
 var folgax = 6;
@@ -42,7 +42,7 @@ var cimaheight = 242;
 var cimawidth = 52;
 var baixoheight = 378;
 var baixowidth = 52;
-var velocano = 30;
+var velocano = 60;
 
 cano[0] = {
     x: canvas.width,
@@ -152,8 +152,8 @@ function jogo(tempoAtual) {
             i = 0;
             document.addEventListener("keydown", iniciarComEspaco);
             sentidograv = 1;
-            //gravidade = 0;
-            //velocano = 0;
+            gravidade = 0;
+            velocano = 0;
             setTimeout(function () {
                 location.reload();
             }, 7000)
@@ -170,8 +170,8 @@ function jogo(tempoAtual) {
             document.addEventListener("keydown", iniciarComEspaco);
             wundebar.play();
             sentidograv = 1;
-            //gravidade = 0;
-            //velocano = 0;
+            gravidade = 0;
+            velocano = 0;
             setTimeout(function () {
                 location.reload();
             }, 6000)
