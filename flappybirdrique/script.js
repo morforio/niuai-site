@@ -118,7 +118,10 @@ function resetJogo() {
 function jogo(tempoAtual) {
 
     wundebar.pause();
+    wundebar.currentTime = 0;
+
     pretocigano.pause();
+    pretocigano.currentTime = 0;
 
     if (typeof tempoAtual !== "number") {
         tempoAtual = performance.now();
