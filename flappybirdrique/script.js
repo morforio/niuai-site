@@ -85,6 +85,7 @@ iniciarButton.addEventListener("click", jogo);
 // INICIAR O JOGO COM ESPAÇO
 document.addEventListener("keydown", iniciarComEspaco);
 
+
 function iniciarComEspaco(event) {
     if (event.code === "Space") {
         jogo();
@@ -93,6 +94,26 @@ function iniciarComEspaco(event) {
 }
 
 let ultimoTempo = 0;
+
+
+function resetJogo() {
+    sentidograv = 1;
+    gravidade = 180;
+    velocano = 60;
+    bx = 33;
+    by = 200;
+    i = 0;
+    ultimoTempo = 0;
+    score = 0;
+    cano.splice(0);
+    cano.push({
+        x: canvas.width,
+        y: 0,
+        novoCriado: false
+    });
+    document.addEventListener("keydown", iniciarComEspaco);
+    iniciarButton.style.display = "block";
+};
 
 function jogo(tempoAtual) {
 
@@ -139,7 +160,7 @@ function jogo(tempoAtual) {
             cano.push({
                 x: canvas.width,
                 y: Math.floor(Math.random() * cimaheight) - cimaheight,
-                novoCriado:false
+                novoCriado: false
             });
         }
         // PASSARO ENTRE AS BORDAS DO CANO
@@ -147,40 +168,14 @@ function jogo(tempoAtual) {
             // PASSARO COLIDIU COM O CANO DE CIMA OU COM O CANO DE BAIXO
             && (by + folgay <= cano[i].y + cimaheight || by + birdheight >= cano[i].y + constant + folgay)) {
             pretocigano.play();
-            bx = 33;
-            by = 200;
-            cano = [{
-                x: canvas.width,
-                y: 0,
-                novoCriado: false
-            }]
-            i = 0;
-            document.addEventListener("keydown", iniciarComEspaco);
-            sentidograv = 1;
-            gravidade = 0;
-            velocano = 0;
-            setTimeout(function () {
-                location.reload();
-            }, 7000)
+            resetJogo();
+            return
         }
 
         if ((by + birdheight) >= (canvas.height - chao.height)) {
-            bx = 33;
-            by = 200;
-            cano = [{
-                x: canvas.width,
-                y: 0,
-                novoCriado: false
-            }]
-            i = 0;
-            document.addEventListener("keydown", iniciarComEspaco);
             wundebar.play();
-            sentidograv = 1;
-            gravidade = 0;
-            velocano = 0;
-            setTimeout(function () {
-                location.reload();
-            }, 6000)
+            resetJogo();
+            return
         }
 
 
