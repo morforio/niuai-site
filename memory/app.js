@@ -97,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
             cards[optionTwoId].setAttribute('src', 'images/white.png');
             cards[optionOneId].removeEventListener('click', flipCard);
             cards[optionTwoId].removeEventListener('click', flipCard);
-            contador++;
             pares.push(cardsChosen);
         }
         //Não formou par
