@@ -85,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (optionOneId == optionTwoId) {
             cards[optionOneId].setAttribute('src', 'images/card.png');
             cards[optionTwoId].setAttribute('src', 'images/card.png');
+            alert("Para de ser ladrão")
         }
         //Formando parzim
         else if (cardsChosen[0] == cardsChosen[1]) {
