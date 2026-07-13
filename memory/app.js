@@ -60,9 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const grid = document.querySelector('.grid');
     var resultDisplay = document.querySelector('#result');
+    var contagi = document.getElementById('contagi');
     var cardsChosen = [];
     var cardsChosenId = [];
     var pares = []
+    var contador = 0;
 
     //Criando a tela do jogo
     function createBoard() {
@@ -85,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (optionOneId == optionTwoId) {
             cards[optionOneId].setAttribute('src', 'images/card.png');
             cards[optionTwoId].setAttribute('src', 'images/card.png');
+            contador++;
             alert("Para de ser ladrão")
         }
         //Formando parzim
@@ -94,17 +97,20 @@ document.addEventListener('DOMContentLoaded', () => {
             cards[optionTwoId].setAttribute('src', 'images/white.png');
             cards[optionOneId].removeEventListener('click', flipCard);
             cards[optionTwoId].removeEventListener('click', flipCard);
+            contador++;
             pares.push(cardsChosen);
         }
         //Não formou par
         else {
             cards[optionOneId].setAttribute('src', 'images/card.png');
             cards[optionTwoId].setAttribute('src', 'images/card.png');
+            contador++;
             alert("Errou, otário");
         }
         cardsChosen = [];
         cardsChosenId = [];
         resultDisplay.textContent = pares.length;
+        contagi.textContent = contador;
         if (pares.length == cardArray.length / 2) {
             resultDisplay.textContent = "Parabéns, você nao é tão imbecil";
         }
