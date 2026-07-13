@@ -77,9 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Conferindo pares
     function checkforMatch() {
-        var cards = document.querySelectorAll("img");
-        const optionOneId = cardsChosenId[0];
-        const optionTwoId = cardsChosenId[1];
+        var cards = document.querySelectorAll('img');
+        var optionOneId = cardsChosenId[0];
+        var optionTwoId = cardsChosenId[1];
 
         //Duplo clique na mesma carta
         if (optionOneId == optionTwoId) {
@@ -91,14 +91,14 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Formou parzim");
             cards[optionOneId].setAttribute('src', 'images/white.png]');
             cards[optionTwoId].setAttribute('src', 'images/white.png');
-            cards.optionOneId.removeEventListener('click', flipCard);
-            cards.optionTwoId.removeEventListener('click', flipCard);
+            cards[optionOneId].removeEventListener('click', flipCard);
+            cards[optionTwoId].removeEventListener('click', flipCard);
             pares.push(cardsChosen);
         }
         //Não formou par
         else {
-            card.optionOneId.setAttribute('src', 'images/card.png');
-            card.optionTwoId.setAttribute('src', 'images/card.png');
+            cards[optionOneId].setAttribute('src', 'images/card.png');
+            cards[optionTwoId].setAttribute('src', 'images/card.png');
             alert("Errou, otário");
         }
         cardsChosen = [];
