@@ -1,6 +1,6 @@
 # HabitGameGuard
 
-Aplicativo WPF (.NET 8) para Windows 10/11 que converte hábitos em créditos e libera partidas de jogos (com foco em League of Legends). O monitor roda em background, acompanha a Live Client Data API local do LoL e bloqueia o jogo quando não há partidas disponíveis.
+Aplicativo WPF (.NET 8) para Windows 10/11 que converte hábitos em créditos e libera partidas de jogos (com foco em League of Legends). O monitor roda em background, acompanha a Live Client Data API local do LoL e bloqueia o jogo quando não há partidas disponíveis. Também servindo de teste para Vibe Coding
 
 ## Arquitetura
 - **Models**: entidades de domínio (hábitos, execuções, apps bloqueados, sessão de partidas, configurações).
