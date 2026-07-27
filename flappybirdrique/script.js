@@ -1,11 +1,11 @@
-var canvas = document.getElementById("canvas");
-var ctx = canvas.getContext("2d");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 
 //CARREGANDO O BOTAO
-var iniciarButton = document.getElementById("iniciar-button")
+const iniciarButton = document.getElementById("iniciar-button")
 
 //CONFIGURANDO O BOTAO
-var rect = canvas.getBoundingClientRect();
+const rect = canvas.getBoundingClientRect();
 
 iniciarButton.style.position = "absolute";
 iniciarButton.style.left = "50%";
@@ -13,37 +13,37 @@ iniciarButton.style.top = "50%";
 iniciarButton.style.transform = "translate(-50%, -50%)";
 
 // CARREGANDO IMAGENS
-var bird = new Image();
+const bird = new Image();
 bird.src = "images/bird.png";
-var bg = new Image();
+const bg = new Image();
 bg.src = "images/bg.png";
-var chao = new Image();
+const chao = new Image();
 chao.src = "images/chao.png"
-var canocima = new Image();
+const canocima = new Image();
 canocima.src = "images/canocima.png";
-var canobaixo = new Image();
+const canobaixo = new Image();
 canobaixo.src = "images/canobaixo.png"
 
 // VARIÁVEIS
 
-var eec = 100;
-var constant;
-var bx = 33;
-var by = 200;
-var sentidograv = 1;
-var gravidade = 180;
-var scoreDisplay = 0;
-var scoreMesmoCano = [false];
-var cano = [];
-var folgax = 6;
-var folgay = 7;
+const eec = 100;
+let constant;
+let bx = 33;
+let by = 200;
+let sentidograv = 1;
+const gravidade = 180;
+let scoreDisplay = 0;
+let scoreMesmoCano = [false];
+const cano = [];
+const folgax = 6;
+const folgay = 7;
 const birdheight = 26;
 const birdwidth = 38;
-var cimaheight = 242;
-var cimawidth = 52;
-var baixoheight = 378;
-var baixowidth = 52;
-var velocano = 60;
+const cimaheight = 242;
+const cimawidth = 52;
+const baixoheight = 378;
+const baixowidth = 52;
+const velocano = 60;
 
 cano[0] = {
     x: canvas.width,
@@ -52,13 +52,13 @@ cano[0] = {
 };
 
 // CARREGANDO SONS
-var fly = new Audio();
+const fly = new Audio();
 fly.src = "sounds/fly.mp3";
-var scoresound = new Audio();
+const scoresound = new Audio();
 scoresound.src = "sounds/score.mp3";
-var wundebar = new Audio();
+const wundebar = new Audio();
 wundebar.src = "sounds/wunderbar.mp3";
-var pretocigano = new Audio();
+const pretocigano = new Audio();
 pretocigano.src = "sounds/preto-cigano.mp3";
 
 // CAPTURA DE TECLA
@@ -132,7 +132,7 @@ function jogo(tempoAtual) {
         ultimoTempo = tempoAtual;
     };
 
-    var deltaTime = (tempoAtual - ultimoTempo) / 1000;
+    let deltaTime = (tempoAtual - ultimoTempo) / 1000;
 
     ultimoTempo = tempoAtual;
 
