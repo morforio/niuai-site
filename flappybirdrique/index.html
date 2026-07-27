@@ -1,216 +1,77 @@
-var canvas = document.getElementById("canvas");
-var ctx = canvas.getContext("2d");
+<!DOCTYPE html>
+<html>
 
-//CARREGANDO O BOTAO
-var iniciarButton = document.getElementById("iniciar-button")
-
-//CONFIGURANDO O BOTAO
-var rect = canvas.getBoundingClientRect();
-
-iniciarButton.style.position = "absolute";
-iniciarButton.style.left = "50%";
-iniciarButton.style.top = "50%";
-iniciarButton.style.transform = "translate(-50%, -50%)";
-
-// CARREGANDO IMAGENS
-var bird = new Image();
-bird.src = "images/bird.png";
-var bg = new Image();
-bg.src = "images/bg.png";
-var chao = new Image();
-chao.src = "images/chao.png"
-var canocima = new Image();
-canocima.src = "images/canocima.png";
-var canobaixo = new Image();
-canobaixo.src = "images/canobaixo.png"
-
-// VARIÁVEIS
-
-var eec = 100;
-var constant;
-var bx = 33;
-var by = 200;
-var sentidograv = 1;
-var gravidade = 180;
-var scoreDisplay = 0;
-var scoreMesmoCano = [false];
-var cano = [];
-var folgax = 6;
-var folgay = 7;
-const birdheight = 26;
-const birdwidth = 38;
-var cimaheight = 242;
-var cimawidth = 52;
-var baixoheight = 378;
-var baixowidth = 52;
-var velocano = 60;
-
-cano[0] = {
-    x: canvas.width,
-    y: 0,
-    novoCriado: false
-};
-
-// CARREGANDO SONS
-var fly = new Audio();
-fly.src = "sounds/fly.mp3";
-var scoresound = new Audio();
-scoresound.src = "sounds/score.mp3";
-var wundebar = new Audio();
-wundebar.src = "sounds/wunderbar.mp3";
-var pretocigano = new Audio();
-pretocigano.src = "sounds/preto-cigano.mp3";
-
-// CAPTURA DE TECLA
-document.addEventListener("keydown", voa);
-document.addEventListener("pointerdown", voa);
-
-
-// FUNÇÃO PARA VOAR
-function voa() {
-    fly.play();
-    sentidograv = -sentidograv;
-}
-
-//FUNÇÃO PRA TOCAR MUSICA
-function wundebarplay() {
-    wundebar.play();
-}
-
-
-// INICIAR O JOGO COM BOTAO
-iniciarButton.addEventListener("click", jogo);
-
-// INICIAR O JOGO COM ESPAÇO
-document.addEventListener("keydown", iniciarComEspaco);
-
-
-function iniciarComEspaco(event) {
-    if (event.code === "Space") {
-        jogo();
-
-    }
-}
-
-let ultimoTempo = 0;
-
-
-function resetJogo() {
-    sentidograv = 1;
-    gravidade = 180;
-    velocano = 60;
-    bx = 33;
-    by = 200;
-    i = 0;
-    ultimoTempo = 0;
-    scoreDisplay = 0;
-    scoreMesmoCano.splice(0);
-    scoreMesmoCano.push(false);
-    cano.splice(0);
-    cano.push({
-        x: canvas.width,
-        y: 0,
-        novoCriado: false
-    });
-    document.addEventListener("keydown", iniciarComEspaco);
-    iniciarButton.style.display = "block";
-};
-
-function jogo(tempoAtual) {
-
-    wundebar.pause();
-    wundebar.currentTime = 0;
-
-    pretocigano.pause();
-    pretocigano.currentTime = 0;
-
-    if (typeof tempoAtual !== "number") {
-        tempoAtual = performance.now();
-    };
-
-    if (!ultimoTempo) {
-        ultimoTempo = tempoAtual;
-    };
-
-    var deltaTime = (tempoAtual - ultimoTempo) / 1000;
-
-    ultimoTempo = tempoAtual;
-
-    // POSICIONANDO FUNDO DO JOGO
-    ctx.drawImage(bg, 0, 0) // (imagem, posicao x, posicao y)
-
-    //OCULAR BOTAO APÓS INICIAR O JOGO
-    iniciarButton.style.display = "none";
-
-    //REMOVER EVENTO DA BARRA DE ESPAÇO
-    document.removeEventListener("keydown", iniciarComEspaco);
-
-    //CRIANDO CANOS
-    for (let i = 0; i < cano.length; i++) {
-
-        //POSIÇÃO DO CANO DE BAIXO
-        constant = cimaheight + eec;
-
-        //POSIÇÃO DO CANO DE CIMA
-        ctx.drawImage(canocima, cano[i].x, cano[i].y, cimawidth, cimaheight);
-
-        //CONFIGURANDO O CANO DE BAIXO
-        ctx.drawImage(canobaixo, cano[i].x, cano[i].y + constant, baixowidth, baixoheight);
-
-        //MOVIMENTAÇÃO DO CANO
-        cano[i].x = cano[i].x - velocano * deltaTime;
-
-        //CRIAR NOVOS CANOS
-        if (cano[i].x <= 125 && !cano[i].novoCriado) {
-            cano[i].novoCriado = true;
-
-            cano.push({
-                x: canvas.width,
-                y: Math.floor(Math.random() * cimaheight) - cimaheight,
-                novoCriado: false
-            });
-        }
-        // PASSARO ENTRE AS BORDAS DO CANO
-        if (bx + birdwidth >= cano[i].x + folgax && bx + folgax <= cano[i].x + cimawidth
-            // PASSARO COLIDIU COM O CANO DE CIMA OU COM O CANO DE BAIXO
-            && (by + folgay <= cano[i].y + cimaheight || by + birdheight >= cano[i].y + constant + folgay)) {
-            pretocigano.play();
-            resetJogo();
-            return
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flappy Bird</title>
+    <style>
+        * {
+            box-sizing: border-box;
         }
 
-        if ((by + birdheight) >= (canvas.height - chao.height)) {
-            wundebar.play();
-            resetJogo();
-            return
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #111;
+            /* Fundo escuro nas laterais do computador */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
         }
 
-
-
-        //MARCANDO PONTOS
-        if (cano[i].x <= 5 && cano[i].x > 1 && scoreMesmoCano[i] == false) {
-            scoreDisplay = scoreDisplay + 1;
-            scoreMesmoCano[i] = true;
-            scoresound.play();
+        /* 1. O Container imita o formato vertical de um celular */
+        .jogo-container {
+            position: relative;
+            height: 100vh;
+            /* Ocupa toda a altura da tela */
+            max-width: 100vw;
+            /* Impede de passar da largura no celular */
+            aspect-ratio: 288/512;
+            /* Força a proporção vertical (9:16) do celular */
+            box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
+            /* Efeito de sombra bonito nas laterais no PC */
         }
 
-        if (cano[i].x <= 1 && scoreMesmoCano[i] == true) {
-            scoreMesmoCano.push(false);
+        /* 2. O Canvas agora preenche o container sem distorcer */
+        #canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            background-image: url('images/bg_pre.jpg');
+            background-size: cover;
+            background-position: center;
         }
 
-    }
+        /* 3. O botão fica centralizado em relação ao container */
+        #iniciar-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            background-color: #f75f1c;
+            color: #fff;
+            border: 3px solid #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
 
-    // POSICIONANDO O CHAO
-    ctx.drawImage(chao, 0, canvas.height - chao.height)
+<body>
+    <!-- Envelopamos o botão e o canvas no container do celular -->
+    <div class="jogo-container">
+        <button id="iniciar-button">INICIAR</button>
+        <canvas id="canvas" width="288" height="512"></canvas>
+    </div>
+    <script src="script.js"></script>
+</body>
 
-    // DESENHANDO O PASSARO
-    ctx.drawImage(bird, bx, by, birdwidth, birdheight)
-    by += sentidograv * gravidade * deltaTime;
-
-    // CRIANDO O PLACAR;
-    ctx.fillStyle = "#000";
-    ctx.font = "20px Verdana";
-    ctx.fillText("Placar: " + scoreDisplay, 10, 40);
-
-    requestAnimationFrame(jogo);
-};
+</html>
