@@ -32,7 +32,8 @@ var bx = 33;
 var by = 200;
 var sentidograv = 1;
 var gravidade = 180;
-var score = 0;
+var scoreDisplay = 0;
+var scoreMesmoCano = [false];
 var cano = [];
 var folgax = 6;
 var folgay = 7;
@@ -48,9 +49,7 @@ cano[0] = {
     x: canvas.width,
     y: 0,
     novoCriado: false
-}
-
-
+};
 
 // CARREGANDO SONS
 var fly = new Audio();
@@ -104,7 +103,9 @@ function resetJogo() {
     by = 200;
     i = 0;
     ultimoTempo = 0;
-    score = 0;
+    scoreDisplay = 0;
+    scoreMesmoCano.splice(0);
+    scoreMesmoCano.push(false);
     cano.splice(0);
     cano.push({
         x: canvas.width,
@@ -131,7 +132,7 @@ function jogo(tempoAtual) {
         ultimoTempo = tempoAtual;
     };
 
-    deltaTime = (tempoAtual - ultimoTempo) / 1000;
+    var deltaTime = (tempoAtual - ultimoTempo) / 1000;
 
     ultimoTempo = tempoAtual;
 
@@ -187,9 +188,14 @@ function jogo(tempoAtual) {
 
 
         //MARCANDO PONTOS
-        if (cano[i].x == 5) {
-            score = score + 1;
+        if (cano[i].x <= 5 && cano[i].x > 1 && scoreMesmoCano[i] == false) {
+            scoreDisplay = scoreDisplay + 1;
+            scoreMesmoCano[i] = true;
             scoresound.play();
+        }
+
+        if (cano[i].x <= 1 && scoreMesmoCano[i] == true) {
+            scoreMesmoCano.push(false);
         }
 
     }
@@ -204,7 +210,7 @@ function jogo(tempoAtual) {
     // CRIANDO O PLACAR;
     ctx.fillStyle = "#000";
     ctx.font = "20px Verdana";
-    ctx.fillText("Placar: " + score, 10, 40);
+    ctx.fillText("Placar: " + scoreDisplay, 10, 40);
 
     requestAnimationFrame(jogo);
 };
