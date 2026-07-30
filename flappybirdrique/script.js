@@ -58,6 +58,8 @@ const scoresound = new Audio();
 scoresound.src = "sounds/score.mp3";
 const wundebar = new Audio();
 wundebar.src = "sounds/wunderbar.mp3";
+const bg_sound = new Audio();
+bg_sound.src = "sounds/bg_sounds.mp3";
 
 
 // CAPTURA DE TECLA
@@ -69,12 +71,17 @@ document.addEventListener("pointerdown", voa);
 function voa() {
     fly.play();
     sentidograv = -sentidograv;
-}
+};
 
 //FUNÇÃO PRA TOCAR MUSICA
 function wundebarplay() {
     wundebar.play();
-}
+};
+
+//FUNÇÃO PARA REPRODUZIR SOM BG
+function bgsoundplay() {
+    bg_sound.play();
+};
 
 
 // INICIAR O JOGO COM BOTAO
@@ -113,10 +120,13 @@ function resetJogo() {
     });
     document.addEventListener("keydown", iniciarComEspaco);
     iniciarButton.style.display = "block";
+    bgsoundplay.pause();
+    bgsoundplay.currentTime = 0;
 };
 
 function jogo(tempoAtual) {
-
+    bgsoundplay();
+    
     wundebar.pause();
     wundebar.currentTime = 0;
 
