@@ -58,8 +58,7 @@ const scoresound = new Audio();
 scoresound.src = "sounds/score.mp3";
 const wundebar = new Audio();
 wundebar.src = "sounds/wunderbar.mp3";
-const pretocigano = new Audio();
-pretocigano.src = "sounds/preto-cigano.mp3";
+
 
 // CAPTURA DE TECLA
 document.addEventListener("keydown", voa);
@@ -121,8 +120,6 @@ function jogo(tempoAtual) {
     wundebar.pause();
     wundebar.currentTime = 0;
 
-    pretocigano.pause();
-    pretocigano.currentTime = 0;
 
     if (typeof tempoAtual !== "number") {
         tempoAtual = performance.now();
@@ -174,7 +171,7 @@ function jogo(tempoAtual) {
         if (bx + birdwidth >= cano[i].x + folgax && bx + folgax <= cano[i].x + cimawidth
             // PASSARO COLIDIU COM O CANO DE CIMA OU COM O CANO DE BAIXO
             && (by + folgay <= cano[i].y + cimaheight || by + birdheight >= cano[i].y + constant + folgay)) {
-            pretocigano.play();
+            wundebar.play();
             resetJogo();
             return
         }
