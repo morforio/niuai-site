@@ -61,6 +61,7 @@ scoresound.src = "sounds/score.mp3";
 const wundebar = new Audio();
 wundebar.src = "sounds/wunderbar.mp3";
 
+
 // CAPTURA DE TECLA
 document.addEventListener("keydown", voa);
 document.addEventListener("pointerdown", voa);
