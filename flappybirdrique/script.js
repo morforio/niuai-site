@@ -86,7 +86,7 @@ document.addEventListener("keydown", iniciarComEspaco);
 
 
 function iniciarComEspaco(event) {
-    if (event.code === "Space") {
+    if (event.code == "Space") {
         jogo();
 
     }
