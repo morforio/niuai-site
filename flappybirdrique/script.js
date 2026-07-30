@@ -1,5 +1,3 @@
-const { isAbsolute } = require("node:path");
-
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
@@ -33,7 +31,7 @@ let constant;
 let bx = 33;
 let by = 200;
 let sentidograv = 1;
-const gravidade = 180;
+let gravidade = 180;
 let scoreDisplay = 0;
 let scoreMesmoCano = [false];
 const cano = [];
@@ -45,7 +43,7 @@ const cimaheight = 242;
 const cimawidth = 52;
 const baixoheight = 378;
 const baixowidth = 52;
-const velocano = 60;
+let velocano = 60;
 
 cano[0] = {
     x: canvas.width,
