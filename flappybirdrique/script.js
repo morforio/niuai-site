@@ -59,7 +59,7 @@ scoresound.src = "sounds/score.mp3";
 const wundebar = new Audio();
 wundebar.src = "sounds/wunderbar.mp3";
 const bg_sound = new Audio();
-bg_sound.src = "sounds/bg_sounds.mp3";
+bg_sound.src = "sounds/bg_sound.mp3";
 
 
 // CAPTURA DE TECLA
