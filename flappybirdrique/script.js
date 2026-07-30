@@ -1,3 +1,5 @@
+const { isAbsolute } = require("node:path");
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
@@ -59,7 +61,6 @@ scoresound.src = "sounds/score.mp3";
 const wundebar = new Audio();
 wundebar.src = "sounds/wunderbar.mp3";
 
-
 // CAPTURA DE TECLA
 document.addEventListener("keydown", voa);
 document.addEventListener("pointerdown", voa);
@@ -119,7 +120,6 @@ function jogo(tempoAtual) {
 
     wundebar.pause();
     wundebar.currentTime = 0;
-
 
     if (typeof tempoAtual !== "number") {
         tempoAtual = performance.now();
