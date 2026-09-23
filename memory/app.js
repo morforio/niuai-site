@@ -104,14 +104,14 @@ document.addEventListener('DOMContentLoaded', () => {
             cards[optionOneId].setAttribute('src', 'images/card.png');
             cards[optionTwoId].setAttribute('src', 'images/card.png');
             contador++;
-            alert("Errou, otário");
+            alert("Errou, meu chapa");
         }
         cardsChosen = [];
         cardsChosenId = [];
         resultDisplay.textContent = pares.length;
         contagi.textContent = contador;
         if (pares.length == cardArray.length / 2) {
-            resultDisplay.textContent = "Parabéns, você nao é tão imbecil";
+            resultDisplay.textContent = "Parabéns!";
         }
     }
 
